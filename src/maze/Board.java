@@ -39,10 +39,49 @@ public class Board {
 			
 		}
 		
+		
+		// Create inside walls
+		this.board[2][2] = 'X';
+		this.board[2][3] = 'X';
+		this.board[2][4] = 'X';
+		this.board[2][6] = 'X';
+		this.board[2][7] = 'X';
+		this.board[2][8] = 'X';
+		this.board[3][2] = 'X';
+		this.board[3][3] = 'X';
+		this.board[3][4] = 'X';
+		this.board[3][6] = 'X';
+		this.board[3][7] = 'X';
+		this.board[3][8] = 'X';
+		this.board[5][2] = 'X';
+		this.board[5][3] = 'X';
+		this.board[5][4] = 'X';
+		this.board[5][6] = 'X';
+		this.board[5][7] = 'X';
+		this.board[7][2] = 'X';
+		this.board[7][3] = 'X';
+		this.board[7][4] = 'X';
+		this.board[7][5] = 'X';
+		this.board[7][6] = 'X';
+		this.board[7][7] = 'X';
+		
+		
+	}
+
+	public char getCell(int x, int y) {
+		return board[x][y];
 	}
 	
 	public void setCell(int x, int y, char c) {
 		board[x][y] = c;
+	}
+	
+	public int getExitX() {
+		return EXIT_X;
+	}
+	
+	public int getExitY() {
+		return EXIT_Y;
 	}
 	
 	public void print() {
