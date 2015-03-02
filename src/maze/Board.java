@@ -17,30 +17,22 @@ public class Board {
 	
 	public void init() {
 		
+		// Draw outer walls
 		for ( int y = 0; y < height; y++ ) {
 			
 			for ( int x = 0; x < width; x++ ) {
-				
-				if ( x == EXIT_X && y == EXIT_Y ) {
 					
-					this.board[x][y] = 'S';
-					
+				if ( x == 0 || x == width - 1 || y == 0 || y == height - 1 ) {
+					this.board[x][y] = 'X';
 				} else {
-					
-					if ( x == 0 || x == width - 1 || y == 0 || y == height - 1 ) {
-						this.board[x][y] = 'X';
-					} else {
-						this.board[x][y] = ' ';
-					}
-					
+					this.board[x][y] = ' ';
 				}
 				
 			}
 			
 		}
 		
-		
-		// Create inside walls
+		// Create inner walls
 		this.board[2][2] = 'X';
 		this.board[2][3] = 'X';
 		this.board[2][4] = 'X';
@@ -64,24 +56,20 @@ public class Board {
 		this.board[7][5] = 'X';
 		this.board[7][6] = 'X';
 		this.board[7][7] = 'X';
-		
+		this.board[EXIT_X][EXIT_Y] = 'S';
 		
 	}
 
-	public char getCell(int x, int y) {
-		return board[x][y];
+	public char getSymbol(Position p) {
+		return board[p.getX()][p.getY()];
 	}
 	
-	public void setCell(int x, int y, char c) {
-		board[x][y] = c;
+	public void setSymbol(Position p, char c) {
+		board[p.getX()][p.getY()] = c;
 	}
 	
-	public int getExitX() {
-		return EXIT_X;
-	}
-	
-	public int getExitY() {
-		return EXIT_Y;
+	public Position getExitPosition() {
+		return new Position(EXIT_X, EXIT_Y);
 	}
 	
 	public void print() {

@@ -2,24 +2,22 @@ package maze;
 
 public class Hero {
 
-	private int x;
-	private int y;
+	private Position position;
 	private char symbol;
 	
-	public Hero(int x, int y) {
-		this.x		= x;
-		this.y		= y;
+	public Hero(Position p) {
+		this.position = p;
 		this.symbol	= 'H';
 	}
 	
-	public int getX() {
-		return x;
+	public Position getPosition() {
+		return position;
 	}
-	
-	public void setX(int x) {
-		this.x = x;
+
+	public void setPosition(Position position) {
+		this.position = position;
 	}
-	
+
 	public char getSymbol() {
 		return symbol;
 	}
@@ -28,12 +26,36 @@ public class Hero {
 		this.symbol = symbol;
 	}
 	
-	public int getY() {
-		return y;
-	}
+	public Position nextCell(int direction) {
 	
-	public void setY(int y) {
-		this.y = y;
+		Position p = this.position;
+		
+		switch (direction) {
+		
+			case 0:
+				// Up
+				p.setY(p.getY() - 1);
+				break;
+				
+			case 1:
+				// Right
+				p.setX(p.getX() + 1);
+				break;
+				
+			case 2:
+				// Down
+				p.setY(p.getY() + 1);
+				break;
+				
+			case 3:
+				// Left
+				p.setX(p.getX() - 1);
+				break;
+				
+		}
+		
+		return p;
+		
 	}
 	
 }

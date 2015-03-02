@@ -6,8 +6,7 @@ public class Maze {
 	
 	private Board board;
 	private Hero hero;
-	private int swordX;
-	private int swordY;
+	private Position sword;
 	
 	private boolean done;
 	private String input;
@@ -18,9 +17,8 @@ public class Maze {
 	public Maze() {
 		
 		this.board		= new Board(10, 10);
-		this.hero 		= new Hero(1, 1);
-		this.swordX		= 1;
-		this.swordY		= 8;
+		this.hero 		= new Hero(new Position(1, 1));
+		this.sword		= new Position(1, 8);
 		this.done		= false;
 		this.scanner	= new Scanner(System.in);
 
@@ -77,36 +75,17 @@ public class Maze {
 	// Hero
 	
 	public void drawHero() {
-		board.setCell(hero.getX(), hero.getY(), hero.getSymbol());
+		board.setSymbol(hero.getPosition(), hero.getSymbol());
 	}
 	
 	public void moveHero(int direction) {
 		
-		switch (direction) {
+		Position nextp = hero.nextCell(direction);
 		
-			case 0:
-				// Up
-				if ( board.getCell(hero.getX(), hero.getY() - 1) != 'X')
-					hero.setY( hero.getY() - 1);
-				break;
-				
-			case 1:
-				// Right
-				if ( board.getCell(hero.getX() + 1, hero.getY()) != 'X')
-					hero.setX( hero.getX() + 1);
-				break;
-				
-			case 2:
-				// Down
-				if ( board.getCell(hero.getX(), hero.getY() + 1) != 'X')
-					hero.setY( hero.getY() + 1);
-				break;
-				
-			case 3:
-				// Left
-				if ( board.getCell(hero.getX() - 1, hero.getY()) != 'X')
-					hero.setX( hero.getX() - 1);
-				break;
+		if ( board.getSymbol( nextp ) != 'X' ) {
+			
+			if ( board.getSymbol(nextp) == 'S' && hero.getSymbol() != 'A') 
+			
 		}
 			
 	}
@@ -115,12 +94,12 @@ public class Maze {
 	// Sword
 	
 	public void drawSword() {
-		board.setCell(swordX, swordY, 'E');
+		board.setSymbol(sword, 'E');
 	}
 	
 	
 	public boolean checkVictory() {
-		return ( board.getExitX() == hero.getX() && board.getExitY() == hero.getY() );
+		return ( board.getExitPosition() == hero.getPosition() );
 	}
 	
 	
