@@ -1,17 +1,17 @@
 package maze;
 
-public class Hero {
+public class Dragon {
 
 	private Position position;
-	private boolean sword;
+	private boolean dead;
 	private char symbol;
 	
-	public Hero(Position p) {
-		this.position = p;
-		this.sword = false;
-		this.symbol	= 'H';
+	public Dragon() {
+		this.position = new Position(1, 3);
+		this.dead = false;
+		this.symbol = 'D';
 	}
-	
+
 	public Position getPosition() {
 		return position;
 	}
@@ -20,27 +20,24 @@ public class Hero {
 		this.position = position;
 	}
 
-	public boolean hasSword() {
-		return sword;
+	public boolean isDead() {
+		return dead;
 	}
 
-	public void setSword(boolean sword) {
-		if ( sword ) {
-			this.symbol = 'A';
-		}
-		this.sword = sword;
+	public void setDead(boolean dead) {
+		this.dead = dead;
 	}
 
 	public char getSymbol() {
 		return symbol;
 	}
-	
+
 	public void setSymbol(char symbol) {
 		this.symbol = symbol;
 	}
 	
 	public Position nextPosition(int direction) {
-	
+		
 		Position p = new Position(this.position);
 		
 		switch (direction) {

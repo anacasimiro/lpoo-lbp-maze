@@ -17,6 +17,10 @@ public class Position {
 	public boolean equals(Position p) {
 		return this.x == p.getX() && this.y == p.getY();
 	}
+	
+	public boolean isAdjacent(Position p) {
+		return Math.abs( this.x - p.getX() ) + Math.abs( this.y - p.getY() ) == 1;
+	}
 
 	public int getX() {
 		return x;

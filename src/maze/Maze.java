@@ -1,14 +1,16 @@
 package maze;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Maze {
 	
 	private Board board;
 	private Hero hero;
-	private Position sword;
+	private Sword sword;
+	private Dragon dragon;
 	
-	private boolean done;
+	private boolean victory;
 	private String input;
 	
 	private Scanner scanner;
@@ -18,21 +20,39 @@ public class Maze {
 		
 		this.board		= new Board(10, 10);
 		this.hero 		= new Hero(new Position(1, 1));
-		this.sword		= new Position(1, 8);
-		this.done		= false;
+		this.sword		= new Sword();
+		this.dragon		= new Dragon();
+		this.victory	= false;
 		this.scanner	= new Scanner(System.in);
 
 		do {
 			
 			board.init();
 			checkSword();
+			
 			drawHero();
-			if ( hero.getSymbol() == 'H' )
-				drawSword();
+			drawSword();
+			
+			if ( fightDragon() ) {
+				
+				if ( hero.hasSword() ) {
+					dragon.setDead(true);
+				} else {
+					drawDragon();
+					board.print();
+					break;
+				}
+				
+			}
+			
+			drawDragon();
+			
 			board.print();
 			
-			if ( checkVictory() )
+			if ( checkVictory() ) {
+				victory = true;
 				break;
+			}
 		
 			System.out.println();
 			System.out.print("> ");
@@ -59,31 +79,37 @@ public class Maze {
 					// Left
 					moveHero(3);
 					break;
-				
-				case "Q":
-					// Exit
-					done = true;
-					break;
 			}
 			
-		} while( !done );
+			if ( input.equalsIgnoreCase("Q") ) {
+				break;
+			}
+			
+			Random r = new Random();
+			moveDragon( r.nextInt(5) );
+			
+		} while( !victory );
 		
-		System.out.println("\nSeu piçudo!!");
+		if ( victory ) {
+			System.out.println("\nYou lucky bastard!!");
+		} else {
+			System.out.println("\nL0L L00SER!!");
+		}
 		
 	}
 
 	
 	// Hero
 	
-	public void drawHero() {
+	private void drawHero() {
 		board.setSymbol(hero.getPosition(), hero.getSymbol());
 	}
 	
-	public void moveHero(int direction) {
+	private void moveHero(int direction) {
 		
 		Position nextp = hero.nextPosition(direction);
 				
-		if ( board.getSymbol( nextp ) != 'X' && ( board.getSymbol( nextp ) != 'S' || hero.getSymbol() == 'A' ) ) {
+		if ( !board.isWall( nextp ) && ( !board.getExit().equals( nextp ) || hero.hasSword() ) ) {
 			hero.setPosition( nextp );
 		}
 			
@@ -92,19 +118,49 @@ public class Maze {
 	
 	// Sword
 	
-	public void drawSword() {
-		board.setSymbol(sword, 'E');
+	private void drawSword() {
+		if ( !sword.isTaken() ) {
+			board.setSymbol(sword.getPosition(), sword.getSymbol());
+		}
 	}
 	
-	public void checkSword() {
-		if ( sword.equals( hero.getPosition() ) ) {
-			hero.setSymbol('A');
+	private void checkSword() {
+		if ( sword.getPosition().equals( hero.getPosition() ) ) {
+			hero.setSword(true);
+			sword.setTaken(true);
 		}
 	}
 	
 	
-	public boolean checkVictory() {
-		return ( board.getExitPosition().equals( hero.getPosition() ) );
+	// Dragon
+	
+	private void drawDragon() {
+		if ( !dragon.isDead() ) {
+			if ( !sword.isTaken() && dragon.getPosition().equals( sword.getPosition() ) ) {
+				board.setSymbol(dragon.getPosition(), 'F');
+			} else {
+				board.setSymbol(dragon.getPosition(), dragon.getSymbol());
+			}
+		}
+	}
+	
+	private boolean fightDragon() {
+		return dragon.getPosition().isAdjacent( hero.getPosition() ) || dragon.getPosition().equals( hero.getPosition() );
+	}
+	
+	private void moveDragon(int direction) {
+		
+		Position nextp = dragon.nextPosition(direction);
+				
+		if ( !board.isWall( nextp ) && !board.getExit().equals( nextp ) ) {
+			dragon.setPosition( nextp );
+		}
+			
+	}
+	
+	
+	private boolean checkVictory() {
+		return ( board.getExit().equals( hero.getPosition() ) );
 	}
 	
 	public static void main(String[] args) {
