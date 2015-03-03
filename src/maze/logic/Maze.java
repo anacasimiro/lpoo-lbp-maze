@@ -1,4 +1,4 @@
-package maze;
+package maze.logic;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -27,7 +27,6 @@ public class Maze {
 
 		do {
 			
-			board.init();
 			checkSword();
 			
 			drawHero();
@@ -35,7 +34,7 @@ public class Maze {
 			
 			if ( fightDragon() ) {
 				
-				if ( hero.hasSword() ) {
+				if ( hero.getHasSword() ) {
 					dragon.setDead(true);
 				} else {
 					drawDragon();
@@ -109,7 +108,7 @@ public class Maze {
 		
 		Position nextp = hero.nextPosition(direction);
 				
-		if ( !board.isWall( nextp ) && ( !board.getExit().equals( nextp ) || hero.hasSword() ) ) {
+		if ( !board.isWall( nextp ) && ( !board.getExit().equals( nextp ) || hero.getHasSword() ) ) {
 			hero.setPosition( nextp );
 		}
 			
@@ -126,7 +125,7 @@ public class Maze {
 	
 	private void checkSword() {
 		if ( sword.getPosition().equals( hero.getPosition() ) ) {
-			hero.setSword(true);
+			hero.setHasSword(true);
 			sword.setTaken(true);
 		}
 	}
