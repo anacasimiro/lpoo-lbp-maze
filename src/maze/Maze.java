@@ -25,6 +25,7 @@ public class Maze {
 		do {
 			
 			board.init();
+			checkSword();
 			drawHero();
 			if ( hero.getSymbol() == 'H' )
 				drawSword();
@@ -67,7 +68,7 @@ public class Maze {
 			
 		} while( !done );
 		
-		System.out.println("\nBye bye!");
+		System.out.println("\nSeu piçudo!!");
 		
 	}
 
@@ -80,12 +81,10 @@ public class Maze {
 	
 	public void moveHero(int direction) {
 		
-		Position nextp = hero.nextCell(direction);
-		
-		if ( board.getSymbol( nextp ) != 'X' ) {
-			
-			if ( board.getSymbol(nextp) == 'S' && hero.getSymbol() != 'A') 
-			
+		Position nextp = hero.nextPosition(direction);
+				
+		if ( board.getSymbol( nextp ) != 'X' && ( board.getSymbol( nextp ) != 'S' || hero.getSymbol() == 'A' ) ) {
+			hero.setPosition( nextp );
 		}
 			
 	}
@@ -97,12 +96,16 @@ public class Maze {
 		board.setSymbol(sword, 'E');
 	}
 	
-	
-	public boolean checkVictory() {
-		return ( board.getExitPosition() == hero.getPosition() );
+	public void checkSword() {
+		if ( sword.equals( hero.getPosition() ) ) {
+			hero.setSymbol('A');
+		}
 	}
 	
 	
+	public boolean checkVictory() {
+		return ( board.getExitPosition().equals( hero.getPosition() ) );
+	}
 	
 	public static void main(String[] args) {
 		new Maze();

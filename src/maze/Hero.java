@@ -26,9 +26,9 @@ public class Hero {
 		this.symbol = symbol;
 	}
 	
-	public Position nextCell(int direction) {
+	public Position nextPosition(int direction) {
 	
-		Position p = this.position;
+		Position p = new Position(this.position);
 		
 		switch (direction) {
 		

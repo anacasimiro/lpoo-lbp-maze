@@ -8,6 +8,15 @@ public class Position {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public Position(Position p) {
+		this.x = p.getX();
+		this.y = p.getY();
+	}
+	
+	public boolean equals(Position p) {
+		return this.x == p.getX() && this.y == p.getY();
+	}
 
 	public int getX() {
 		return x;
