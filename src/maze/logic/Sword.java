@@ -4,8 +4,8 @@ public class Sword extends Piece {
 
 	private boolean taken;
 	
-	public Sword() {
-		super(new Position(1, 4), 'E');
+	public Sword(Position p) {
+		super(p, 'E');
 		this.taken = false;
 	}
 	

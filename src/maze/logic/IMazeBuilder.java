@@ -2,6 +2,6 @@ package maze.logic;
 
 public interface IMazeBuilder {
 
-	public char[][] build();
+	public char[][] build(Position exit);
 	
 }

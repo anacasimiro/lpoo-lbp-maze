@@ -1,5 +1,6 @@
 package maze.logic;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -7,163 +8,244 @@ public class Maze {
 	
 	private Board board;
 	private Hero hero;
-	private Sword sword;
-	private Dragon dragon;
-	
+	private ArrayList<Dragon> dragons;
+	private ArrayList<Sword> swords;
 	private boolean victory;
-	private String input;
 	
-	private Scanner scanner;
+	private static final int UP		= 0;
+	private static final int RIGHT	= 1;
+	private static final int DOWN	= 2;
+	private static final int LEFT	= 3;
 	
 	
-	public Maze() {
+	// Constructor
+	
+	public Maze(int boardDimension, int dragonsCount, int swordsCount) {
 		
-		this.board		= new Board(10, 10);
-		this.hero 		= new Hero(new Position(1, 1));
-		this.sword		= new Sword();
-		this.dragon		= new Dragon();
+		this.board		= new Board( boardDimension );
+		this.hero 		= new Hero( new Position(1, 1) );
+		this.dragons	= new ArrayList<Dragon>();
+		this.swords		= new ArrayList<Sword>();
 		this.victory	= false;
-		this.scanner	= new Scanner(System.in);
+		
+		Scanner scanner	= new Scanner(System.in);
+		String input;
+		
+		// Add dragons
+		for ( int i = 0; i < dragonsCount; i++ ) {
+			this.newDragon();			
+		}
+		
+		// Add swords
+		for ( int i = 0; i < swordsCount; i++ ) {
+			this.newSword();			
+		}
+		
+		this.drawPieces();
+		this.board.display();
 
 		do {
 			
-			checkSword();
+			System.out.print("\n> ");
+			input = scanner.nextLine();
 			
-			drawHero();
-			drawSword();
+			if ( input.toUpperCase().equals("Q") ) {
+				break;
+			}
 			
-			if ( fightDragon() ) {
-				
-				if ( hero.getHasSword() ) {
-					dragon.setDead(true);
+			if ( !this.moveHero( this.direction(input) ) ) {
+				board.display();
+				continue;
+			}
+			
+			this.updatePieces();
+			this.drawPieces();
+			board.display();
+			
+		} while( !victory && !this.hero.isDead() );
+		
+		if ( victory ) {
+			System.out.println("\nYou won! :)");
+		} else {
+			System.out.println("\nYou lost! :(");
+		}
+		
+		scanner.close();
+		
+	}
+	
+	
+	// Pieces methods
+	
+	private void newDragon() {
+		
+		Position dragonPosition;
+		
+		do {
+			dragonPosition = this.randomEmptyPosition();
+		} while ( dragonPosition.isAdjacent( this.hero.getPosition() ) );
+		
+		this.dragons.add( new Dragon( dragonPosition ) );
+		
+	}
+	private void newSword() {
+		this.swords.add( new Sword( this.randomEmptyPosition() ) );
+	}	
+	private boolean moveHero(int direction) {
+		
+		ArrayList<Integer> possibleMoves = this.getPossibleMoves( this.hero.getPosition() );
+		Position nextPosition = this.hero.getPosition().next(direction);
+		
+		if ( possibleMoves.contains(direction) || ( nextPosition.isEqual( this.board.getExit() ) && this.hero.isArmed() ) ) {
+			this.board.setSymbol(this.hero.getPosition(), ' ');
+			this.hero.setPosition( nextPosition );
+			return true;
+		} else {
+			return false;
+		}
+			
+	}
+	private void moveDragon(Dragon dragon) {
+		
+		ArrayList<Integer> possibleMoves;
+		Position nextPosition;
+		Random random = new Random();
+	
+		possibleMoves = this.getPossibleMoves( dragon.getPosition() );
+		nextPosition = dragon.getPosition().next( possibleMoves.get( random.nextInt( possibleMoves.size() ) ) );
+		this.board.setSymbol( dragon.getPosition() , ' ');
+		dragon.setPosition( nextPosition );
+		
+	}
+	private void drawPieces() {
+		
+		// Draw Swords
+		for ( int i = 0; i < this.swords.size(); i++ ) {
+			this.board.setSymbol(this.swords.get(i).getPosition(), this.swords.get(i).getSymbol());
+		}
+
+		// Draw Dragons
+		for ( int i = 0; i < this.dragons.size(); i++ ) {
+			if ( this.board.getSymbol( this.dragons.get(i).getPosition() ) == 'E' ) {
+				this.board.setSymbol(this.dragons.get(i).getPosition(), 'F');
+			} else {
+				this.board.setSymbol(this.dragons.get(i).getPosition(), this.dragons.get(i).getSymbol());
+			}
+		}
+		
+		// Draw Hero
+		board.setSymbol(this.hero.getPosition(), this.hero.getSymbol());
+		
+	}
+	private void updatePieces() {
+		
+		// Hero
+		if ( this.hero.getPosition().isEqual( this.board.getExit() ) ) {
+			this.victory = true;
+			return;
+		}
+		
+		// Dragons
+		for ( int i = 0; i < this.dragons.size(); i++ ) {
+			
+			moveDragon( this.dragons.get(i) );
+			
+			if ( this.dragons.get(i).getPosition().isAdjacent( this.hero.getPosition() ) ) {
+			
+				if ( this.hero.isArmed() ) {
+					this.board.setSymbol( this.dragons.get(i).getPosition() , ' ');
+					this.dragons.remove(i--);
 				} else {
-					drawDragon();
-					board.print();
-					break;
+					this.hero.setDead(true);
 				}
 				
 			}
 			
-			drawDragon();
-			
-			board.print();
-			
-			if ( checkVictory() ) {
-				victory = true;
-				break;
-			}
-		
-			System.out.println();
-			System.out.print("> ");
-			input = scanner.nextLine();
-
-			switch (input.toUpperCase()) {
-			
-				case "W":
-					// Up
-					moveHero(0);
-					break;
-					
-				case "D":
-					// Right
-					moveHero(1);
-					break;
-					
-				case "S":
-					// Down
-					moveHero(2);
-					break;
-					
-				case "A":
-					// Left
-					moveHero(3);
-					break;
-			}
-			
-			if ( input.equalsIgnoreCase("Q") ) {
-				break;
-			}
-			
-			Random r = new Random();
-			moveDragon( r.nextInt(5) );
-			
-		} while( !victory );
-		
-		if ( victory ) {
-			System.out.println("\nYou lucky bastard!!");
-		} else {
-			System.out.println("\nL0L L00SER!!");
 		}
 		
-	}
-
-	
-	// Hero
-	
-	private void drawHero() {
-		board.setSymbol(hero.getPosition(), hero.getSymbol());
-	}
-	
-	private void moveHero(int direction) {
-		
-		Position nextp = hero.nextPosition(direction);
+		// Swords
+		for ( int i = 0; i < this.swords.size(); i++ ) {
+			
+			if ( this.swords.get(i).getPosition().isEqual( this.hero.getPosition() ) ) {
 				
-		if ( !board.isWall( nextp ) && ( !board.getExit().equals( nextp ) || hero.getHasSword() ) ) {
-			hero.setPosition( nextp );
-		}
-			
-	}
-	
-	
-	// Sword
-	
-	private void drawSword() {
-		if ( !sword.isTaken() ) {
-			board.setSymbol(sword.getPosition(), sword.getSymbol());
-		}
-	}
-	
-	private void checkSword() {
-		if ( sword.getPosition().equals( hero.getPosition() ) ) {
-			hero.setHasSword(true);
-			sword.setTaken(true);
-		}
-	}
-	
-	
-	// Dragon
-	
-	private void drawDragon() {
-		if ( !dragon.isDead() ) {
-			if ( !sword.isTaken() && dragon.getPosition().equals( sword.getPosition() ) ) {
-				board.setSymbol(dragon.getPosition(), 'F');
-			} else {
-				board.setSymbol(dragon.getPosition(), dragon.getSymbol());
-			}
-		}
-	}
-	
-	private boolean fightDragon() {
-		return dragon.getPosition().isAdjacent( hero.getPosition() ) || dragon.getPosition().equals( hero.getPosition() );
-	}
-	
-	private void moveDragon(int direction) {
-		
-		Position nextp = dragon.nextPosition(direction);
+				this.hero.setArmed(true);
+				this.swords.remove(i--);
 				
-		if ( !board.isWall( nextp ) && !board.getExit().equals( nextp ) ) {
-			dragon.setPosition( nextp );
-		}
+			}
 			
+		}
+		
 	}
 	
+		
+	// Other methods
 	
-	private boolean checkVictory() {
-		return ( board.getExit().equals( hero.getPosition() ) );
+	private int direction(String input) {
+		
+		switch (input.toUpperCase()) {
+			case "W":
+				return UP;
+			case "D":
+				return RIGHT;
+			case "S":
+				return DOWN;
+			case "A":
+				return LEFT;
+			default:
+				return -1;
+		}
+		
 	}
+	private ArrayList<Integer> getPossibleMoves(Position p) {
+		
+		ArrayList<Integer> moves = new ArrayList<Integer>();
+		char topSymbol		= this.board.getSymbol( new Position(p.getX(), p.getY() - 1) );
+		char rightSymbol	= this.board.getSymbol( new Position(p.getX() + 1, p.getY()) );
+		char bottomSymbol	= this.board.getSymbol( new Position(p.getX(), p.getY() + 1) );
+		char leftSymbol		= this.board.getSymbol( new Position(p.getX() - 1, p.getY()) );
+		
+		
+		// Up
+		if ( topSymbol != 'X' && topSymbol != 'S' ) {
+			moves.add(UP);
+		}
+		
+		// Right
+		if ( rightSymbol != 'X' && rightSymbol != 'S' ) {
+			moves.add(RIGHT);
+		}
+		
+		// Down
+		if ( bottomSymbol != 'X' && bottomSymbol != 'S' ) {
+			moves.add(DOWN);
+		}
+		
+		// Left
+		if ( leftSymbol != 'X' && leftSymbol != 'S' ) {
+			moves.add(LEFT);
+		}
+		
+		return moves;
+		
+	}
+	private Position randomEmptyPosition() {
+		
+		Position p = new Position(0, 0);
+		Random random = new Random();
+		
+		do {
+			p.setX( random.nextInt( board.getDimension() - 2 ) + 1 );
+			p.setY( random.nextInt( board.getDimension() - 2 ) + 1 );
+		} while ( !this.board.isEmpty(p) );
+		
+		return p;
+		
+	}
+	
+	// Main function
 	
 	public static void main(String[] args) {
-		new Maze();
+		new Maze(17, 3, 10);
 	}
 
 }
