@@ -139,6 +139,9 @@ public class Maze {
 	}
 	private void updatePieces() {
 		
+		Random random = new Random();
+		
+		
 		// Hero
 		if ( this.hero.getPosition().isEqual( this.board.getExit() ) ) {
 			this.victory = true;
@@ -148,7 +151,10 @@ public class Maze {
 		// Dragons
 		for ( int i = 0; i < this.dragons.size(); i++ ) {
 			
-			moveDragon( this.dragons.get(i) );
+			this.dragons.get(i).setSleeping( random.nextBoolean() );
+			if ( !this.dragons.get(i).isSleeping() ) {
+				moveDragon( this.dragons.get(i) );
+			}
 			
 			if ( this.dragons.get(i).getPosition().isAdjacent( this.hero.getPosition() ) ) {
 			
