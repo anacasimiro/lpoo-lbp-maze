@@ -8,9 +8,10 @@ public class Maze {
 	
 	private Board board;
 	private Hero hero;
-	private ArrayList<Dragon> dragons;
-	private ArrayList<Sword> swords;
-	private boolean victory;
+	private ArrayList<Dragon> dragons	= new ArrayList<Dragon>();
+	private ArrayList<Sword> swords		= new ArrayList<Sword>();
+	private ArrayList<Shield> shields	= new ArrayList<Shield>();
+	private boolean victory				= false;
 	
 	private static final int UP		= 0;
 	private static final int RIGHT	= 1;
@@ -20,13 +21,10 @@ public class Maze {
 	
 	// Constructor
 	
-	public Maze(int boardDimension, int dragonsCount, int swordsCount) {
+	public Maze(int boardDimension, int dragonsCount, int swordsCount, int shieldsCount) {
 		
 		this.board		= new Board( boardDimension );
-		this.hero 		= new Hero( new Position(1, 1) );
-		this.dragons	= new ArrayList<Dragon>();
-		this.swords		= new ArrayList<Sword>();
-		this.victory	= false;
+		this.hero 		= new Hero( this.randomEmptyPosition() );
 		
 		Scanner scanner	= new Scanner(System.in);
 		String input;
@@ -39,6 +37,11 @@ public class Maze {
 		// Add swords
 		for ( int i = 0; i < swordsCount; i++ ) {
 			this.newSword();			
+		}
+		
+		// Add shields
+		for ( int i = 0; i < shieldsCount; i++ ) {
+			this.newShield();			
 		}
 		
 		this.drawPieces();
@@ -90,7 +93,10 @@ public class Maze {
 	}
 	private void newSword() {
 		this.swords.add( new Sword( this.randomEmptyPosition() ) );
-	}	
+	}
+	private void newShield() {
+		this.shields.add( new Shield( this.randomEmptyPosition() ) );
+	}
 	private boolean moveHero(int direction) {
 		
 		ArrayList<Integer> possibleMoves = this.getPossibleMoves( this.hero.getPosition() );
@@ -122,6 +128,11 @@ public class Maze {
 		// Draw Swords
 		for ( int i = 0; i < this.swords.size(); i++ ) {
 			this.board.setSymbol(this.swords.get(i).getPosition(), this.swords.get(i).getSymbol());
+		}
+		
+		// Draw Shields
+		for ( int i = 0; i < this.shields.size(); i++ ) {
+			this.board.setSymbol(this.shields.get(i).getPosition(), this.shields.get(i).getSymbol());
 		}
 
 		// Draw Dragons
@@ -176,6 +187,18 @@ public class Maze {
 				
 				this.hero.setArmed(true);
 				this.swords.remove(i--);
+				
+			}
+			
+		}
+		
+		// Sheilds
+		for ( int i = 0; i < this.shields.size(); i++ ) {
+			
+			if ( this.shields.get(i).getPosition().isEqual( this.hero.getPosition() ) ) {
+				
+				this.hero.setShielded(true);
+				this.shields.remove(i--);
 				
 			}
 			
@@ -251,7 +274,7 @@ public class Maze {
 	// Main function
 	
 	public static void main(String[] args) {
-		new Maze(17, 3, 10);
+		new Maze(17, 3, 2, 2);
 	}
 
 }

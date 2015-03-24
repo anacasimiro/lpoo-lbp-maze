@@ -11,21 +11,10 @@ public class Board {
 	
 	public Board(int dimension) {
 		
-		if ( dimension == 0 ) {
-			
-			ManualBuilder manualBuilder = new ManualBuilder();
-			this.exit = new Position(0, 0);
-			this.board = manualBuilder.build(this.exit);
-			this.dimension = 10;
-			
-		} else {
-			
-			AutoBuilder autoBuilder = new AutoBuilder(dimension);
-			this.exit = new Position(0, 0);
-			this.board = autoBuilder.build(this.exit);
-			this.dimension = dimension;
-			
-		}
+		IMazeBuilder mazeBuilder = dimension == 0 ? new ManualBuilder() : new AutoBuilder(dimension);
+		this.exit = new Position(0, 0);
+		this.board = mazeBuilder.build(this.exit);
+		this.dimension = dimension == 0 ? 10 : dimension;
 		
 	}
 
