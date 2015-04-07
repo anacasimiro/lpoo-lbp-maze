@@ -1,21 +1,17 @@
 package maze.logic;
 
-import java.util.Random;
-
 public class Dragon extends Piece {
 
-	private boolean dead;
-	private boolean sleeping;
+	private boolean dead = false;
+	private boolean sleeping = false;
+	private int type;
 	
 	
 	// Constructor
 	
-	public Dragon(Position p) {
+	public Dragon(Position p, int type) {
 		super(p, 'D');
-		this.dead = false;
-		
-		Random random = new Random();
-		this.setSleeping( random.nextBoolean() );
+		this.type = type;
 	}
 
 	
@@ -26,6 +22,9 @@ public class Dragon extends Piece {
 	}
 	public boolean isSleeping() {
 		return this.sleeping;
+	}
+	public int getType() {
+		return this.type;
 	}
 	public void setDead(boolean dead) {
 		this.dead = dead;
@@ -38,6 +37,8 @@ public class Dragon extends Piece {
 			this.setSymbol('D');
 		}
 	}
-
+	public void setType(int type) {
+		this.type = type;
+	}
 	
 }

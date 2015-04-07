@@ -11,7 +11,7 @@ public class Board {
 	
 	public Board(int dimension) {
 		
-		IMazeBuilder mazeBuilder = dimension == 0 ? new ManualBuilder() : new AutoBuilder(dimension);
+		MazeBuilder mazeBuilder = dimension == 0 ? new ManualBuilder() : new AutoBuilder(dimension);
 		this.exit = new Position(0, 0);
 		this.board = mazeBuilder.build(this.exit);
 		this.dimension = dimension == 0 ? 10 : dimension;

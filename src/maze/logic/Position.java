@@ -4,11 +4,6 @@ public class Position {
 
 	private int x, y;
 	
-	private static final int UP		= 0;
-	private static final int RIGHT	= 1;
-	private static final int DOWN	= 2;
-	private static final int LEFT	= 3;
-
 	
 	// Constructors
 	
@@ -50,7 +45,7 @@ public class Position {
 	
 	// Other methods
 	
-	public Position next(int direction) {
+	public Position next(Direction direction) {
 		
 		Position p = new Position(this);
 		
@@ -66,6 +61,9 @@ public class Position {
 			break;
 			case LEFT:
 				p.setX(this.x - 1);
+			break;
+			default:
+				
 			break;
 		}
 		

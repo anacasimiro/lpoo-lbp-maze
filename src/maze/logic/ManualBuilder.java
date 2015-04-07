@@ -1,6 +1,6 @@
 package maze.logic;
 
-public class ManualBuilder implements IMazeBuilder {
+public class ManualBuilder implements MazeBuilder {
 
 	public char[][] build(Position exit) {
 		

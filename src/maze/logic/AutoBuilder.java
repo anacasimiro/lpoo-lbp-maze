@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Stack;
 
-public class AutoBuilder implements IMazeBuilder {
+public class AutoBuilder implements MazeBuilder {
 
 	private int boardDimension;
 	private int visitedCellsDimension;

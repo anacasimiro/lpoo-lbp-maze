@@ -2,10 +2,17 @@ package maze.logic;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
+/**
+ * The main class that represents a game
+ * 
+ * @author Ana Casimiro
+ * @author Joao Bernardino
+ *
+ */
 public class Maze {
 	
+	private Settings settings;
 	private Board board;
 	private Hero hero;
 	private ArrayList<Dragon> dragons	= new ArrayList<Dragon>();
@@ -13,74 +20,60 @@ public class Maze {
 	private ArrayList<Shield> shields	= new ArrayList<Shield>();
 	private boolean victory				= false;
 	
-	private static final int UP		= 0;
-	private static final int RIGHT	= 1;
-	private static final int DOWN	= 2;
-	private static final int LEFT	= 3;
 	
-	
-	// Constructor
-	
-	public Maze(int boardDimension, int dragonsCount, int swordsCount, int shieldsCount) {
+	/**
+	 * 
+	 * Creates a new instance of the class
+	 *
+	 * @param config
+	 */
+	public Maze(Settings settings) {
 		
-		this.board		= new Board( boardDimension );
+		this.settings	= settings;
+		this.board		= new Board( this.settings.getMazeDimension() );
 		this.hero 		= new Hero( this.randomEmptyPosition() );
 		
-		Scanner scanner	= new Scanner(System.in);
-		String input;
-		
 		// Add dragons
-		for ( int i = 0; i < dragonsCount; i++ ) {
-			this.newDragon();			
+		for ( int i = 0; i < this.settings.getNumberOfDragons(); i++ ) {
+			this.newDragon(this.settings.getDragonsType());
 		}
 		
 		// Add swords
-		for ( int i = 0; i < swordsCount; i++ ) {
+		for ( int i = 0; i < this.settings.getNumberOfSwords(); i++ ) {
 			this.newSword();			
 		}
 		
 		// Add shields
-		for ( int i = 0; i < shieldsCount; i++ ) {
+		for ( int i = 0; i < this.settings.getNumberOfShields(); i++ ) {
 			this.newShield();			
 		}
 		
 		this.drawPieces();
-		this.board.display();
-
-		do {
-			
-			System.out.print("\n> ");
-			input = scanner.nextLine();
-			
-			if ( input.toUpperCase().equals("Q") ) {
-				break;
-			}
-			
-			if ( !this.moveHero( this.direction(input) ) ) {
-				board.display();
-				continue;
-			}
-			
-			this.updatePieces();
-			this.drawPieces();
-			board.display();
-			
-		} while( !victory && !this.hero.isDead() );
 		
-		if ( victory ) {
-			System.out.println("\nYou won! :)");
-		} else {
-			System.out.println("\nYou lost! :(");
-		}
+	}
+	
+	
+	/**
+	 * Updates the maze
+	 * 
+	 * @param heroDirection
+	 * 
+	 * @return true if game ended, false otherwise
+	 */
+	public boolean update(Direction heroDirection) {
 		
-		scanner.close();
+		this.moveHero( heroDirection );
+		this.updatePieces();
+		this.drawPieces();
+		
+		return this.victory || this.hero.isDead();
 		
 	}
 	
 	
 	// Pieces methods
 	
-	private void newDragon() {
+	private void newDragon(int type) {
 		
 		Position dragonPosition;
 		
@@ -88,7 +81,7 @@ public class Maze {
 			dragonPosition = this.randomEmptyPosition();
 		} while ( dragonPosition.isAdjacent( this.hero.getPosition() ) );
 		
-		this.dragons.add( new Dragon( dragonPosition ) );
+		this.dragons.add( new Dragon( dragonPosition, type ) );
 		
 	}
 	private void newSword() {
@@ -97,9 +90,9 @@ public class Maze {
 	private void newShield() {
 		this.shields.add( new Shield( this.randomEmptyPosition() ) );
 	}
-	private boolean moveHero(int direction) {
+	private boolean moveHero(Direction direction) {
 		
-		ArrayList<Integer> possibleMoves = this.getPossibleMoves( this.hero.getPosition() );
+		ArrayList<Direction> possibleMoves = this.getPossibleMoves( this.hero.getPosition() );
 		Position nextPosition = this.hero.getPosition().next(direction);
 		
 		if ( possibleMoves.contains(direction) || ( nextPosition.isEqual( this.board.getExit() ) && this.hero.isArmed() ) ) {
@@ -113,7 +106,7 @@ public class Maze {
 	}
 	private void moveDragon(Dragon dragon) {
 		
-		ArrayList<Integer> possibleMoves;
+		ArrayList<Direction> possibleMoves;
 		Position nextPosition;
 		Random random = new Random();
 	
@@ -162,11 +155,19 @@ public class Maze {
 		// Dragons
 		for ( int i = 0; i < this.dragons.size(); i++ ) {
 			
-			this.dragons.get(i).setSleeping( random.nextBoolean() );
-			if ( !this.dragons.get(i).isSleeping() ) {
-				moveDragon( this.dragons.get(i) );
+			// Control Sleep
+			if ( this.dragons.get(i).getType() == 3 ) {
+				this.dragons.get(i).setSleeping( random.nextBoolean() );
 			}
 			
+			// Control Movement 
+			if ( this.dragons.get(i).getType() == 2 || this.dragons.get(i).getType() == 3 ) {
+				if ( !this.dragons.get(i).isSleeping() ) {
+					moveDragon( this.dragons.get(i) );
+				}
+			}
+			
+			// Control Encounters With Hero
 			if ( this.dragons.get(i).getPosition().isAdjacent( this.hero.getPosition() ) ) {
 			
 				if ( this.hero.isArmed() ) {
@@ -209,25 +210,9 @@ public class Maze {
 		
 	// Other methods
 	
-	private int direction(String input) {
+	private ArrayList<Direction> getPossibleMoves(Position p) {
 		
-		switch (input.toUpperCase()) {
-			case "W":
-				return UP;
-			case "D":
-				return RIGHT;
-			case "S":
-				return DOWN;
-			case "A":
-				return LEFT;
-			default:
-				return -1;
-		}
-		
-	}
-	private ArrayList<Integer> getPossibleMoves(Position p) {
-		
-		ArrayList<Integer> moves = new ArrayList<Integer>();
+		ArrayList<Direction> moves = new ArrayList<Direction>();
 		char topSymbol		= this.board.getSymbol( new Position(p.getX(), p.getY() - 1) );
 		char rightSymbol	= this.board.getSymbol( new Position(p.getX() + 1, p.getY()) );
 		char bottomSymbol	= this.board.getSymbol( new Position(p.getX(), p.getY() + 1) );
@@ -236,22 +221,22 @@ public class Maze {
 		
 		// Up
 		if ( topSymbol != 'X' && topSymbol != 'S' ) {
-			moves.add(UP);
+			moves.add(Direction.UP);
 		}
 		
 		// Right
 		if ( rightSymbol != 'X' && rightSymbol != 'S' ) {
-			moves.add(RIGHT);
+			moves.add(Direction.RIGHT);
 		}
 		
 		// Down
 		if ( bottomSymbol != 'X' && bottomSymbol != 'S' ) {
-			moves.add(DOWN);
+			moves.add(Direction.DOWN);
 		}
 		
 		// Left
 		if ( leftSymbol != 'X' && leftSymbol != 'S' ) {
-			moves.add(LEFT);
+			moves.add(Direction.LEFT);
 		}
 		
 		return moves;
@@ -270,11 +255,46 @@ public class Maze {
 		return p;
 		
 	}
-	
-	// Main function
-	
-	public static void main(String[] args) {
-		new Maze(17, 3, 2, 2);
-	}
 
+
+	
+	
+	/**
+	 * Getter for hero
+	 *
+	 * @return the hero
+	 */
+	public Hero getHero() {
+		return this.hero;
+	}
+	
+	
+
+
+	/**
+	 * Converts the maze to a formatted string
+	 * 
+	 * @return A formatted string representing the maze
+	 */
+	@Override
+	public String toString() {
+		
+		String output = "";
+		
+		for ( int y = 0; y < this.board.getDimension(); y++ ) {
+			
+			for ( int x = 0; x < board.getDimension(); x++ ) {
+			
+				output += board.getSymbol(new Position(x, y)) + " ";
+				
+			}
+			
+			output += "\n";
+			
+		}
+		
+		return output;
+		
+	}
+	
 }
