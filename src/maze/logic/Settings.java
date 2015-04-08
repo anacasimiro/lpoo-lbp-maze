@@ -16,9 +16,22 @@ public class Settings {
 	private int numberOfSwords;
 	private int numberOfShields;
 	
+	
 	/**
-	 * 
-	 * Creates a new instance of the class
+	 * Creates a new instance of the class with default parameters
+	 *
+	 */
+	public Settings() {
+		this.mazeDimension = 17;
+		this.dragonsType = 3;
+		this.numberOfDragons = 4;
+		this.numberOfSwords = 2;
+		this.numberOfShields = 1;
+	}
+	
+	
+	/**
+	 * Creates a new instance of the class with the given parameters
 	 *
 	 * @param mazeDimension
 	 * @param dragonsType

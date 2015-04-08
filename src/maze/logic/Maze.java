@@ -22,8 +22,26 @@ public class Maze {
 	
 	
 	/**
-	 * 
-	 * Creates a new instance of the class
+	 * Creates a new instance of the class with the demo maze
+	 *
+	 * @param config
+	 */
+	public Maze() {
+		
+		this.settings	= new Settings(10, 1, 1, 1, 0);
+		this.board		= new Board(0);
+		this.hero 		= new Hero( new Position(1, 1) );
+		
+		this.dragons.add( new Dragon( new Position(1, 3), 1) );
+		this.swords.add( new Sword( new Position(1, 8) ) );
+		
+		this.drawPieces();
+		
+	}
+	
+	
+	/**
+	 * Creates a new instance of the class with given settings
 	 *
 	 * @param config
 	 */
@@ -71,8 +89,11 @@ public class Maze {
 	}
 	
 	
-	// Pieces methods
-	
+	/**
+	 * Creates a new dragon
+	 * 
+	 * @param type
+	 */
 	private void newDragon(int type) {
 		
 		Position dragonPosition;
@@ -84,18 +105,38 @@ public class Maze {
 		this.dragons.add( new Dragon( dragonPosition, type ) );
 		
 	}
+	
+
+	/**
+	 * Creates a new sword
+	 * 
+	 */
 	private void newSword() {
 		this.swords.add( new Sword( this.randomEmptyPosition() ) );
 	}
+	
+	
+	/**
+	 * Creates a new shield
+	 */
 	private void newShield() {
 		this.shields.add( new Shield( this.randomEmptyPosition() ) );
 	}
+	
+	
+	/**
+	 * Moves the hero
+	 * 
+	 * @param direction
+	 * 
+	 * @return true if movement was possible, false otherwise
+	 */
 	private boolean moveHero(Direction direction) {
 		
 		ArrayList<Direction> possibleMoves = this.getPossibleMoves( this.hero.getPosition() );
 		Position nextPosition = this.hero.getPosition().next(direction);
 		
-		if ( possibleMoves.contains(direction) || ( nextPosition.isEqual( this.board.getExit() ) && this.hero.isArmed() ) ) {
+		if ( possibleMoves.contains(direction) || ( nextPosition.equals( this.board.getExit() ) && this.hero.isArmed() ) ) {
 			this.board.setSymbol(this.hero.getPosition(), ' ');
 			this.hero.setPosition( nextPosition );
 			return true;
@@ -104,6 +145,13 @@ public class Maze {
 		}
 			
 	}
+	
+	
+	/**
+	 * Moves a dragon
+	 * 
+	 * @param dragon
+	 */
 	private void moveDragon(Dragon dragon) {
 		
 		ArrayList<Direction> possibleMoves;
@@ -116,6 +164,12 @@ public class Maze {
 		dragon.setPosition( nextPosition );
 		
 	}
+	
+	
+	/**
+	 * Draws the pieces on the board
+	 * 
+	 */
 	private void drawPieces() {
 		
 		// Draw Swords
@@ -141,13 +195,19 @@ public class Maze {
 		board.setSymbol(this.hero.getPosition(), this.hero.getSymbol());
 		
 	}
+	
+	
+	/**
+	 * Updates all the pieces
+	 * 
+	 */
 	private void updatePieces() {
 		
 		Random random = new Random();
 		
 		
 		// Hero
-		if ( this.hero.getPosition().isEqual( this.board.getExit() ) ) {
+		if ( this.hero.getPosition().equals( this.board.getExit() ) ) {
 			this.victory = true;
 			return;
 		}
@@ -184,7 +244,7 @@ public class Maze {
 		// Swords
 		for ( int i = 0; i < this.swords.size(); i++ ) {
 			
-			if ( this.swords.get(i).getPosition().isEqual( this.hero.getPosition() ) ) {
+			if ( this.swords.get(i).getPosition().equals( this.hero.getPosition() ) ) {
 				
 				this.hero.setArmed(true);
 				this.swords.remove(i--);
@@ -196,7 +256,7 @@ public class Maze {
 		// Sheilds
 		for ( int i = 0; i < this.shields.size(); i++ ) {
 			
-			if ( this.shields.get(i).getPosition().isEqual( this.hero.getPosition() ) ) {
+			if ( this.shields.get(i).getPosition().equals( this.hero.getPosition() ) ) {
 				
 				this.hero.setShielded(true);
 				this.shields.remove(i--);
@@ -207,9 +267,14 @@ public class Maze {
 		
 	}
 	
-		
-	// Other methods
 	
+	/**
+	 * Calculates the possible moves from a given position
+	 * 
+	 * @param p The current position
+	 * 
+	 * @return an ArrayList containing the possible movements
+	 */
 	private ArrayList<Direction> getPossibleMoves(Position p) {
 		
 		ArrayList<Direction> moves = new ArrayList<Direction>();
@@ -242,6 +307,13 @@ public class Maze {
 		return moves;
 		
 	}
+	
+	
+	/**
+	 * Calculates a random empty position on the board
+	 * 
+	 * @return the empty position
+	 */
 	private Position randomEmptyPosition() {
 		
 		Position p = new Position(0, 0);
@@ -257,8 +329,6 @@ public class Maze {
 	}
 
 
-	
-	
 	/**
 	 * Getter for hero
 	 *
@@ -266,6 +336,62 @@ public class Maze {
 	 */
 	public Hero getHero() {
 		return this.hero;
+	}
+	
+	
+	/**
+	 * Getter for dragons
+	 *
+	 * @return the dragons
+	 */
+	public ArrayList<Dragon> getDragons() {
+		return dragons;
+	}
+	
+	
+
+
+	/**
+	 * Getter for swords
+	 *
+	 * @return the swords
+	 */
+	public ArrayList<Sword> getSwords() {
+		return swords;
+	}
+	
+	
+
+
+	/**
+	 * Getter for shields
+	 *
+	 * @return the shields
+	 */
+	public ArrayList<Shield> getShields() {
+		return shields;
+	}
+	
+	
+
+
+	/**
+	 * Getter for victory
+	 *
+	 * @return the victory
+	 */
+	public boolean getVictory() {
+		return victory;
+	}
+
+
+	/**
+	 * Getter for board
+	 *
+	 * @return the board
+	 */
+	public Board getBoard() {
+		return board;
 	}
 	
 	

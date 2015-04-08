@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  * 
- * A class to control the Command Line Interface
+ * Controls the Command Line Interface
  * 
  * @author Ana Casimiro
  * @author Joao Bernardino
@@ -29,12 +29,8 @@ public class Launcher {
 	private static Settings getMazeSettings(Scanner scanner) {
 		
 		int mazeDimension, dragonsType, numberOfDragons, numberOfSwords, numberOfShields;
-
 		
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-
-		
-		// Maze dimension
+		clearConsole();
 		
 		do {
 			mazeDimension = getMazeDimension(scanner);
@@ -42,26 +38,17 @@ public class Launcher {
 		
 		System.out.println("");
 		
-		
-		// Dragons Type
-		
 		do {
 			dragonsType = getDragonsType(scanner);
 		} while ( dragonsType < 0 );
 		
 		System.out.println("");
 
-		
-		// Dragons
-		
 		do {
 			numberOfDragons = getDragons(scanner);
 		} while ( numberOfDragons < 0 );
 		
 		System.out.println("");
-		
-		
-		// Swords
 		
 		do {
 			numberOfSwords = getSwords(scanner);
@@ -69,15 +56,11 @@ public class Launcher {
 		
 		System.out.println("");
 		
-		
-		// Shields
-		
 		do {
 			numberOfShields = getShields(scanner);
 		} while ( numberOfShields < 0 );
 		
 		System.out.println("");
-		
 		
 		return new Settings(mazeDimension, dragonsType, numberOfDragons, numberOfSwords, numberOfShields);
 		
@@ -322,9 +305,17 @@ public class Launcher {
 	 */
 	private static void printMaze() {
 		
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		clearConsole();
 		System.out.println(maze);
 		
+	}
+	
+	
+	/**
+	 * Clears the console
+	 */
+	private static void clearConsole() {
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	}
 	
 	
@@ -341,7 +332,7 @@ public class Launcher {
 		
 		do {
 
-			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+			clearConsole();
 			System.out.println("[LPOO] MAZE");
 			System.out.println("==================================================\n");
 			System.out.println("1. New Game");
@@ -354,6 +345,8 @@ public class Launcher {
 				case "1":
 					
 					maze = new Maze( getMazeSettings(scanner) );
+					//maze = new Maze( new Settings() );
+					//maze = new Maze();
 					
 					if ( newGame(scanner) ) {
 						System.out.println("\nYou won! :)\nPress <Enter> to continue...");
