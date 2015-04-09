@@ -252,17 +252,31 @@ public class Launcher {
 	
 	
 	/**
+	 * Asks user for input
+	 * 
+	 * @param scanner The keyboard scanner
+	 * 
+	 * @return the input
+	 */
+	private static String getUserInput(Scanner scanner) {
+		
+		System.out.print("\n> ");
+		
+		return scanner.nextLine();
+		
+	}
+	
+	
+	/**
 	 * Asks user for hero direction
 	 * 
 	 * @param scanner The keyboard Scanner
 	 * 
 	 * @return
 	 */
-	private static Direction getHeroDirection(Scanner scanner) {
+	private static Direction getHeroDirection(String input) {
 		
-		System.out.print("\n> ");
-		
-		switch (scanner.nextLine().toUpperCase()) {
+		switch (input.toUpperCase()) {
 			case "W":
 				return Direction.UP;
 			case "D":
@@ -285,13 +299,21 @@ public class Launcher {
 	 */
 	private static boolean newGame(Scanner scanner) {
 		
+		String input;
 		boolean done = false;
 		
 		printMaze();
 		
 		while ( !done ) {
-			done = maze.update( getHeroDirection(scanner) );
+			
+			if ( (input = getUserInput(scanner)).toUpperCase().equals("Q") ) {
+				return false;
+			} else {
+				done = maze.update( getHeroDirection(input) );
+			}
+			
 			printMaze();
+			
 		}
 		
 		return !maze.getHero().isDead();
@@ -335,7 +357,9 @@ public class Launcher {
 			clearConsole();
 			System.out.println("[LPOO] MAZE");
 			System.out.println("==================================================\n");
-			System.out.println("1. New Game");
+			System.out.println("1. New Game (Default)");
+			System.out.println("2. New Game (Custom)");
+			System.out.println("3. New Game (Demo)");
 			System.out.println("0. Exit");
 			System.out.print("\n> ");
 			input = scanner.nextLine();
@@ -344,9 +368,36 @@ public class Launcher {
 				
 				case "1":
 					
+					//maze = new Maze( getMazeSettings(scanner) );
+					maze = new Maze( new Settings() );
+					
+					if ( newGame(scanner) ) {
+						System.out.println("\nYou won! :)\nPress <Enter> to continue...");
+					} else {
+						System.out.println("\nYou lost! :(\nPress <Enter> to continue...");
+					}
+					
+					scanner.nextLine();
+					
+				break;
+				
+				case "2":
+					
 					maze = new Maze( getMazeSettings(scanner) );
-					//maze = new Maze( new Settings() );
-					//maze = new Maze();
+					
+					if ( newGame(scanner) ) {
+						System.out.println("\nYou won! :)\nPress <Enter> to continue...");
+					} else {
+						System.out.println("\nYou lost! :(\nPress <Enter> to continue...");
+					}
+					
+					scanner.nextLine();
+					
+				break;
+				
+				case "3":
+					
+					maze = new Maze();
 					
 					if ( newGame(scanner) ) {
 						System.out.println("\nYou won! :)\nPress <Enter> to continue...");

@@ -231,10 +231,16 @@ public class Maze {
 			if ( this.dragons.get(i).getPosition().isAdjacent( this.hero.getPosition() ) ) {
 			
 				if ( this.hero.isArmed() ) {
+					
 					this.board.setSymbol( this.dragons.get(i).getPosition() , ' ');
 					this.dragons.remove(i--);
+					
 				} else {
-					this.hero.setDead(true);
+					
+					if ( !this.dragons.get(i).isSleeping() ) {
+						this.hero.setDead(true);
+					}
+					
 				}
 				
 			}
@@ -347,8 +353,6 @@ public class Maze {
 	public ArrayList<Dragon> getDragons() {
 		return dragons;
 	}
-	
-	
 
 
 	/**
@@ -360,8 +364,6 @@ public class Maze {
 		return swords;
 	}
 	
-	
-
 
 	/**
 	 * Getter for shields
@@ -371,8 +373,6 @@ public class Maze {
 	public ArrayList<Shield> getShields() {
 		return shields;
 	}
-	
-	
 
 
 	/**
@@ -394,8 +394,6 @@ public class Maze {
 		return board;
 	}
 	
-	
-
 
 	/**
 	 * Converts the maze to a formatted string

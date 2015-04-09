@@ -5,6 +5,14 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Stack;
 
+
+/**
+ * A class to randomly generate a new maze
+ * 
+ * @author Ana Casimiro
+ * @author Joao Bernardino
+ *
+ */
 public class AutoBuilder implements MazeBuilder {
 
 	private int boardDimension;
@@ -14,14 +22,12 @@ public class AutoBuilder implements MazeBuilder {
 	private Position guideCell;
 	private Stack<Position> pathHistory;
 	
-	private static final int UP		= 0;
-	private static final int RIGHT	= 1;
-	private static final int DOWN	= 2;
-	private static final int LEFT	= 3;
 	
-	
-	// Constructor
-	
+	/**
+	 * Creates a new instance of the class
+	 *
+	 * @param dimension The Maze dimension
+	 */
 	public AutoBuilder(int dimension) {
 		
 		this.boardDimension = dimension;
@@ -33,8 +39,13 @@ public class AutoBuilder implements MazeBuilder {
 	}
 	
 	
-	// Build method
-	
+	/**
+	 * Builds a new maze
+	 * 
+	 * @param exit A Position to store the exit
+	 * 
+	 * @return a char matrix representing the maze
+	 */
 	public char[][] build(Position exit) {
 				
 		this.initBoard();
@@ -43,7 +54,7 @@ public class AutoBuilder implements MazeBuilder {
 		this.initGuideCell();
 		
 		Random random = new Random();
-		ArrayList<Integer> possibleMoves;
+		ArrayList<Direction> possibleMoves;
 		
 		do {
 		
@@ -62,8 +73,10 @@ public class AutoBuilder implements MazeBuilder {
 	}
 	
 	
-	// Init methods
-	
+	/**
+	 * Prepares the board for the application of the maze generation algorithm
+	 * 
+	 */
 	private void initBoard() {
 		
 		for ( int y = 0; y < this.boardDimension; y++ ) {
@@ -73,11 +86,24 @@ public class AutoBuilder implements MazeBuilder {
 		}
 		
 	}
+
+	
+	/**
+	 * Prepares the visitedCells array fot the application of the maze generation algorithm
+	 * 
+	 */
 	private void initVisitedCells() {
 		for ( int y = 0; y < this.visitedCellsDimension; y++ ) {
 			Arrays.fill(this.visitedCells[y], '.');
 		}
 	}
+
+	
+	/**
+	 * Puts an exit on the maze
+	 * 
+	 * @param exit The position of the exit
+	 */
 	private void initExit(Position exit) {
 		
 		int x, y;
@@ -102,6 +128,13 @@ public class AutoBuilder implements MazeBuilder {
 		this.setBoardCell(exit, 'S');
 		
 	}
+
+	
+	
+	/**
+	 * Places the guideCell for the application of the maze generation algorithm
+	 * 
+	 */
 	private void initGuideCell() {
 		
 		int x, y;
@@ -127,54 +160,76 @@ public class AutoBuilder implements MazeBuilder {
 	}
 	
 	
-	// Setters
-	
+	/**
+	 * Sets a symbol on a board cell
+	 * 
+	 * @param p The position of the cell
+	 * @param s The symbol
+	 */
 	private void setBoardCell(Position p, char s) {
 		this.board[p.getX()][p.getY()] = s;
 	}
+	
+	
+	/**
+	 * Marks a board cell as visited
+	 * 
+	 * @param p The position of the cell
+	 * @param s The symbol
+	 */
 	private void setVisitedCell(Position p, char s) {
 		this.visitedCells[p.getX()][p.getY()] = s;
 	}
 	
 	
-	// Guide Cell methods
-	
-	private ArrayList<Integer> getPossibleMoves() {
+	/**
+	 * Calculates the possible moves for the guide cell
+	 * 
+	 * @return an ArrayList containing the possible moves
+	 */
+	private ArrayList<Direction> getPossibleMoves() {
 		
-		ArrayList<Integer> moves = new ArrayList<Integer>();
+		ArrayList<Direction> moves = new ArrayList<Direction>();
 		
 		// UP
 		
 		if ( this.guideCell.getY() > 0 && this.visitedCells[this.guideCell.getX()][this.guideCell.getY() - 1] == '.' ) {
-			moves.add(UP);
+			moves.add(Direction.UP);
 		}
 		
 		
 		// RIGHT
 		
 		if ( this.guideCell.getX() < this.visitedCellsDimension - 1 && this.visitedCells[this.guideCell.getX() + 1][this.guideCell.getY()] == '.' ) {
-			moves.add(RIGHT);
+			moves.add(Direction.RIGHT);
 		}
 		
 		
 		// DOWN
 		
 		if ( this.guideCell.getY() < this.visitedCellsDimension - 1 && this.visitedCells[this.guideCell.getX()][this.guideCell.getY() + 1] == '.' ) {
-			moves.add(DOWN);
+			moves.add(Direction.DOWN);
 		}
 		
 		
 		// LEFT
 		
 		if ( this.guideCell.getX() > 0 && this.visitedCells[this.guideCell.getX() - 1][this.guideCell.getY()] == '.' ) {
-			moves.add(LEFT);
+			moves.add(Direction.LEFT);
 		}
 		
 		
 		return moves;
 		
 	}
-	private void moveGuideCell(int direction) {
+
+
+	/**
+	 * Moves the guide cell
+	 * 
+	 * @param direction The direction of the movement
+	 */
+	private void moveGuideCell(Direction direction) {
 		
 		switch (direction) {
 			case UP:
@@ -195,6 +250,10 @@ public class AutoBuilder implements MazeBuilder {
 			case LEFT:
 				this.setBoardCell(new Position(this.guideCell.getX() * 2, this.guideCell.getY() * 2 + 1), ' ');
 				this.guideCell.setX(this.guideCell.getX() - 1);
+			break;
+			
+			default:
+				
 			break;
 		}
 		

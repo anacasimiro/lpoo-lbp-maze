@@ -4,6 +4,8 @@
 package maze.logic;
 
 /**
+ * A class to represent the Maze settings
+ * 
  * @author Ana Casimiro
  * @author Joao Bernardino
  *

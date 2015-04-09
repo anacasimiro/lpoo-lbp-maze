@@ -1,5 +1,13 @@
 package maze.logic;
 
+
+/**
+ * A class that represents the hero
+ * 
+ * @author Ana Casimiro
+ * @author Joao Bernardino
+ *
+ */
 public class Hero extends Piece {
 
 	private boolean armed		= false;
@@ -7,34 +15,92 @@ public class Hero extends Piece {
 	private boolean dead		= false;
 	
 	
-	// Constructor
-	
+	/**
+	 * Creates a new instance of the class
+	 *
+	 * @param p The position of the hero
+	 * 
+	 */
 	public Hero(Position p) {
 		super(p, 'H');
 	}
-	
-	
-	// Getters and Setters
 
+
+	/**
+	 * Getter for armed
+	 *
+	 * @return the armed
+	 */
 	public boolean isArmed() {
-		return this.armed;
+		return armed;
 	}
-	public boolean isShielded() {
-		return this.shielded;
-	}
-	public boolean isDead() {
-		return this.dead;
-	}
+
+
+	/**
+	 * Setter for armed
+	 *
+	 * @param armed the armed to set
+	 */
 	public void setArmed(boolean armed) {
+		
 		if ( this.armed = armed ) {
-			this.symbol = 'A';
+		
+			if ( this.shielded ) {
+				this.symbol = 'Y';				
+			} else {
+				this.symbol = 'A';
+			}
+			
 		}
+		
 	}
+
+
+	/**
+	 * Getter for shielded
+	 *
+	 * @return the shielded
+	 */
+	public boolean isShielded() {
+		return shielded;
+	}
+
+
+	/**
+	 * Setter for shielded
+	 *
+	 * @param shielded the shielded to set
+	 */
 	public void setShielded(boolean shielded) {
+		
 		if ( this.shielded = shielded ) {
-			this.symbol = '';
+			
+			if ( this.armed ) {
+				this.symbol = 'Y';				
+			} else {
+				this.symbol = 'P';
+			}
+			
 		}
+		
 	}
+
+
+	/**
+	 * Getter for dead
+	 *
+	 * @return the dead
+	 */
+	public boolean isDead() {
+		return dead;
+	}
+
+
+	/**
+	 * Setter for dead
+	 *
+	 * @param dead the dead to set
+	 */
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	}
