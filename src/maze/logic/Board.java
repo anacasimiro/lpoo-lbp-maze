@@ -55,6 +55,16 @@ public class Board {
 	
 	
 	/**
+	 * Getter for board
+	 * 
+	 * @return the board
+	 */
+	public char[][] getBoard() {
+		return this.board;
+	}
+	
+	
+	/**
 	 * Sets the symbol on a position of the board
 	 * 
 	 * @param p The position
