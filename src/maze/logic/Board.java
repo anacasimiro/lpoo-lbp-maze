@@ -10,7 +10,7 @@ public class Board {
 	/**
 	 * Creates a new instance of the class
 	 *
-	 * @param dimension
+	 * @param dimension The dimension of the board
 	 */
 	public Board(int dimension) {
 		

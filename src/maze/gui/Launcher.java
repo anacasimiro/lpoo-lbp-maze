@@ -88,7 +88,7 @@ public class Launcher {
 	/**
 	 * The Main function
 	 * 
-	 * @param args
+	 * @param args Main arguments
 	 */
 	public static void main(String[] args) {
 		

@@ -24,7 +24,6 @@ public class Maze {
 	/**
 	 * Creates a new instance of the class with the demo maze
 	 *
-	 * @param config
 	 */
 	public Maze() {
 		
@@ -43,7 +42,7 @@ public class Maze {
 	/**
 	 * Creates a new instance of the class with given settings
 	 *
-	 * @param config
+	 * @param settings The game settings
 	 */
 	public Maze(Settings settings) {
 		
@@ -74,7 +73,7 @@ public class Maze {
 	/**
 	 * Updates the maze
 	 * 
-	 * @param heroDirection
+	 * @param heroDirection The direction of the hero's movement
 	 * 
 	 * @return true if game ended, false otherwise
 	 */
@@ -92,7 +91,7 @@ public class Maze {
 	/**
 	 * Creates a new dragon
 	 * 
-	 * @param type
+	 * @param type The dragon type
 	 */
 	private void newDragon(int type) {
 		
@@ -127,7 +126,7 @@ public class Maze {
 	/**
 	 * Moves the hero
 	 * 
-	 * @param direction
+	 * @param direction The direction of the hero's movement
 	 * 
 	 * @return true if movement was possible, false otherwise
 	 */
@@ -150,7 +149,7 @@ public class Maze {
 	/**
 	 * Moves a dragon
 	 * 
-	 * @param dragon
+	 * @param dragon The dragon to move
 	 */
 	private void moveDragon(Dragon dragon) {
 		
