@@ -12,7 +12,7 @@ public class Dragon extends Piece {
 
 	private boolean dead = false;
 	private boolean sleeping = false;
-	private int type;
+	private DragonType type;
 	
 	
 	/**
@@ -22,7 +22,7 @@ public class Dragon extends Piece {
 	 * @param type The type of the dragon
 	 * 
 	 */
-	public Dragon(Position p, int type) {
+	public Dragon(Position p, DragonType type) {
 		super(p, 'D');
 		this.type = type;
 	}
@@ -77,7 +77,7 @@ public class Dragon extends Piece {
 	 *
 	 * @return the type
 	 */
-	public int getType() {
+	public DragonType getType() {
 		return type;
 	}
 
@@ -87,7 +87,7 @@ public class Dragon extends Piece {
 	 *
 	 * @param type the type to set
 	 */
-	public void setType(int type) {
+	public void setType(DragonType type) {
 		this.type = type;
 	}
 	

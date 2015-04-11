@@ -13,7 +13,7 @@ package maze.logic;
 public class Settings {
 
 	private int mazeDimension;
-	private int dragonsType;
+	private DragonType dragonsType;
 	private int numberOfDragons;
 	private int numberOfSwords;
 	private int numberOfShields;
@@ -25,7 +25,7 @@ public class Settings {
 	 */
 	public Settings() {
 		this.mazeDimension = 17;
-		this.dragonsType = 3;
+		this.dragonsType = DragonType.MOVING_SLEEPING;
 		this.numberOfDragons = 4;
 		this.numberOfSwords = 2;
 		this.numberOfShields = 1;
@@ -41,7 +41,7 @@ public class Settings {
 	 * @param numberOfSwords
 	 * @param numberOfShields
 	 */
-	public Settings( int mazeDimension, int dragonsType, int numberOfDragons, int numberOfSwords, int numberOfShields) {
+	public Settings( int mazeDimension, DragonType dragonsType, int numberOfDragons, int numberOfSwords, int numberOfShields) {
 		this.mazeDimension = mazeDimension;
 		this.dragonsType = dragonsType;
 		this.numberOfDragons = numberOfDragons;
@@ -75,7 +75,7 @@ public class Settings {
 	 *
 	 * @return the dragonsType
 	 */
-	public int getDragonsType() {
+	public DragonType getDragonsType() {
 		return dragonsType;
 	}
 
@@ -85,7 +85,7 @@ public class Settings {
 	 *
 	 * @param dragonsType the dragonsType to set
 	 */
-	public void setDragonsType(int dragonsType) {
+	public void setDragonsType(DragonType dragonsType) {
 		this.dragonsType = dragonsType;
 	}
 

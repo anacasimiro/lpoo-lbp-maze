@@ -13,7 +13,7 @@ import javax.swing.JFrame;
  */
 public class Launcher {
 	
-	private static JFrame frame = new JFrame("[LPOO] Maze"); 
+	private static JFrame frame = new JFrame("LPOO - Maze"); 
 	private static MainMenuPanel mainMenuPanel = new MainMenuPanel();
 	
 	
@@ -32,7 +32,6 @@ public class Launcher {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		
 		
 	}
 

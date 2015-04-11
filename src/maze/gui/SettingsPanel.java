@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -12,6 +13,7 @@ import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
+import maze.logic.DragonType;
 import maze.logic.Settings;
 
 /**
@@ -23,6 +25,8 @@ import maze.logic.Settings;
  */
 public class SettingsPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
+
 	Settings mazeSettings;
 	
 	JLabel mazeDimensionLabel;
@@ -36,6 +40,7 @@ public class SettingsPanel extends JPanel {
 	JSpinner numberOfSwordsSpinner;
 	JSpinner numberOfShieldsSpinner;
 	JSpinner dragonsTypeSpinner;
+	JComboBox<DragonType> dragonsTypeComboBox;
 	
 	JButton saveButton;
 	JButton cancelButton;
@@ -84,6 +89,12 @@ public class SettingsPanel extends JPanel {
 		numberOfShieldsSpinner.setValue( mazeSettings.getNumberOfShields() );
 		
 		
+		// Dragons Type
+		
+		dragonsTypeLabel = new JLabel("Dragons type:");
+		dragonsTypeComboBox = new JComboBox<DragonType>(DragonType.values());
+		dragonsTypeComboBox.setSelectedItem( mazeSettings.getDragonsType() );	
+		
 		// Save Button
 		
 		saveButton = new JButton("Save");
@@ -96,6 +107,7 @@ public class SettingsPanel extends JPanel {
 				mazeSettings.setNumberOfDragons( (Integer)numberOfDragonsSpinner.getValue() );
 				mazeSettings.setNumberOfSwords( (Integer)numberOfSwordsSpinner.getValue() );
 				mazeSettings.setNumberOfShields( (Integer)numberOfShieldsSpinner.getValue() );
+				mazeSettings.setDragonsType( (DragonType)dragonsTypeComboBox.getSelectedItem() );
 				
 				Launcher.showMainMenu();
 				
@@ -120,7 +132,6 @@ public class SettingsPanel extends JPanel {
 	}
 	
 	
-	
 	/**
 	 * Adds all the widgets to the JPanel
 	 * 
@@ -139,6 +150,9 @@ public class SettingsPanel extends JPanel {
 		this.add(numberOfShieldsLabel);
 		this.add(numberOfShieldsSpinner);
 		
+		this.add(dragonsTypeLabel);
+		this.add(dragonsTypeComboBox);
+		
 		this.add(saveButton);
 		this.add(cancelButton);
 		
@@ -153,9 +167,8 @@ public class SettingsPanel extends JPanel {
 		
 		this.mazeSettings = mazeSettings;
 		
-		//this.setPreferredSize( new Dimension(400, 700) );
 		this.setBorder( new EmptyBorder(30, 60, 30, 60) );
-		this.setLayout( new GridLayout(5, 2) );
+		this.setLayout( new GridLayout(6, 2, 5, 8) );
 		
 		createWidgets();
 		addWidgets();

@@ -1,5 +1,6 @@
 package maze.cli;
 
+import maze.logic.DragonType;
 import maze.logic.Maze;
 import maze.logic.Direction;
 import maze.logic.Settings;
@@ -62,7 +63,7 @@ public class Launcher {
 		
 		System.out.println("");
 		
-		return new Settings(mazeDimension, dragonsType, numberOfDragons, numberOfSwords, numberOfShields);
+		return new Settings(mazeDimension, DragonType.values()[dragonsType - 1], numberOfDragons, numberOfSwords, numberOfShields);
 		
 	}
 	

@@ -27,11 +27,11 @@ public class Maze {
 	 */
 	public Maze() {
 		
-		this.settings	= new Settings(10, 1, 1, 1, 0);
+		this.settings	= new Settings(10, DragonType.STILL, 1, 1, 0);
 		this.board		= new Board(0);
 		this.hero 		= new Hero( new Position(1, 1) );
 		
-		this.dragons.add( new Dragon( new Position(1, 3), 1) );
+		this.dragons.add( new Dragon( new Position(1, 3), DragonType.STILL) );
 		this.swords.add( new Sword( new Position(1, 8) ) );
 		
 		this.drawPieces();
@@ -93,7 +93,7 @@ public class Maze {
 	 * 
 	 * @param type The dragon type
 	 */
-	private void newDragon(int type) {
+	private void newDragon(DragonType type) {
 		
 		Position dragonPosition;
 		
@@ -215,12 +215,12 @@ public class Maze {
 		for ( int i = 0; i < this.dragons.size(); i++ ) {
 			
 			// Control Sleep
-			if ( this.dragons.get(i).getType() == 3 ) {
+			if ( this.dragons.get(i).getType() == DragonType.MOVING_SLEEPING ) {
 				this.dragons.get(i).setSleeping( random.nextBoolean() );
 			}
 			
 			// Control Movement 
-			if ( this.dragons.get(i).getType() == 2 || this.dragons.get(i).getType() == 3 ) {
+			if ( this.dragons.get(i).getType() == DragonType.MOVING || this.dragons.get(i).getType() == DragonType.MOVING_SLEEPING ) {
 				if ( !this.dragons.get(i).isSleeping() ) {
 					moveDragon( this.dragons.get(i) );
 				}

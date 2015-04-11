@@ -3,6 +3,7 @@ package maze.gui;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 import maze.logic.Settings;
 
@@ -24,21 +26,63 @@ import maze.logic.Settings;
 public class MainMenuPanel extends JComponent {
 
 	private static final long serialVersionUID = 1L;
+	
 	BufferedImage background;
+	
 	JButton newGameButton;
+	JButton demoGameButton;
 	JButton settingsButton;
+	JButton exitButton;
+
 	
 	Settings mazeSettings = new Settings();
-	
+
 	
 	/**
 	 * Creates all necessary widgets
 	 * 
 	 */
 	private void createWidgets() {
+
+		
+		newGameButton = new JButton("New Game");
+		newGameButton.setFocusPainted(false);
+		newGameButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			
+				int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?", "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				
+				if ( answer == JOptionPane.YES_OPTION ) {
+					
+				}
+				
+			}
+			
+		});
+		
+		
+		demoGameButton = new JButton("Demo Game");
+		demoGameButton.setFocusPainted(false);
+		demoGameButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a demo game?", "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				
+				if ( answer == JOptionPane.YES_OPTION ) {
+					
+				}
+				
+			}
+			
+		});
+		
 		
 		settingsButton = new JButton("Settings");
-		
+		settingsButton.setFocusPainted(false);
 		settingsButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -50,10 +94,26 @@ public class MainMenuPanel extends JComponent {
 			
 		});
 		
-		settingsButton.setPreferredSize(new Dimension(100, 60));
+		
+		exitButton = new JButton("Exit");
+		exitButton.setFocusPainted(false);
+		exitButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				
+				if ( answer == JOptionPane.YES_OPTION ) {
+					System.exit(0);
+				}
+				
+			}
+			
+		});
+		
 		
 	}
-	
 	
 	
 	/**
@@ -61,10 +121,12 @@ public class MainMenuPanel extends JComponent {
 	 */
 	private void addWidgets() {
 		
+		this.add(newGameButton);
+		this.add(demoGameButton);
 		this.add(settingsButton);
+		this.add(exitButton);
 		
 	}
-	
 	
 	
 	/**
@@ -88,10 +150,11 @@ public class MainMenuPanel extends JComponent {
 		
 	}
 	
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, this);
+		g.drawImage(background.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH), 0, 0, this);
 	}
 	
 }
