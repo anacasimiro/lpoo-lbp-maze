@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -14,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import maze.logic.Maze;
 import maze.logic.Settings;
 
 /**
@@ -27,15 +27,15 @@ public class MainMenuPanel extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 	
-	BufferedImage background;
+	private Image background;
 	
-	JButton newGameButton;
-	JButton demoGameButton;
-	JButton settingsButton;
-	JButton exitButton;
+	private JButton newGameButton;
+	private JButton demoGameButton;
+	private JButton settingsButton;
+	private JButton exitButton;
 
 	
-	Settings mazeSettings = new Settings();
+	private Settings mazeSettings = new Settings();
 
 	
 	/**
@@ -55,7 +55,7 @@ public class MainMenuPanel extends JComponent {
 				int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new game?", "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				
 				if ( answer == JOptionPane.YES_OPTION ) {
-					
+					Launcher.showGame( new GamePanel( new Maze(mazeSettings) ) );
 				}
 				
 			}
@@ -73,7 +73,7 @@ public class MainMenuPanel extends JComponent {
 				int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a demo game?", "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				
 				if ( answer == JOptionPane.YES_OPTION ) {
-					
+					Launcher.showGame( new GamePanel( new Maze() ) );
 				}
 				
 			}

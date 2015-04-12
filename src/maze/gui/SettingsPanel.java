@@ -27,7 +27,7 @@ public class SettingsPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 
-	Settings mazeSettings;
+	private Settings mazeSettings;
 	
 	JLabel mazeDimensionLabel;
 	JLabel numberOfDragonsLabel;
