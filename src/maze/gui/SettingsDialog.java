@@ -3,9 +3,12 @@ package maze.gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -23,11 +26,13 @@ import maze.logic.Settings;
  * @author Joao Bernardino
  *
  */
-public class SettingsPanel extends JPanel {
+public class SettingsDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 
 	private Settings mazeSettings;
+	
+	JPanel panel;
 	
 	JLabel mazeDimensionLabel;
 	JLabel numberOfDragonsLabel;
@@ -109,7 +114,7 @@ public class SettingsPanel extends JPanel {
 				mazeSettings.setNumberOfShields( (Integer)numberOfShieldsSpinner.getValue() );
 				mazeSettings.setDragonsType( (DragonType)dragonsTypeComboBox.getSelectedItem() );
 				
-				Launcher.showMainMenu();
+				dispose();
 				
 			}
 			
@@ -123,7 +128,7 @@ public class SettingsPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Launcher.showMainMenu();
+				dispose();
 			}
 			
 		});
@@ -138,23 +143,23 @@ public class SettingsPanel extends JPanel {
 	 */
 	private void addWidgets() {
 		
-		this.add(mazeDimensionLabel);
-		this.add(mazeDimensionSpinner);
+		panel.add(mazeDimensionLabel);
+		panel.add(mazeDimensionSpinner);
 		
-		this.add(numberOfDragonsLabel);
-		this.add(numberOfDragonsSpinner);
+		panel.add(numberOfDragonsLabel);
+		panel.add(numberOfDragonsSpinner);
 		
-		this.add(numberOfSwordsLabel);
-		this.add(numberOfSwordsSpinner);
+		panel.add(numberOfSwordsLabel);
+		panel.add(numberOfSwordsSpinner);
 		
-		this.add(numberOfShieldsLabel);
-		this.add(numberOfShieldsSpinner);
+		panel.add(numberOfShieldsLabel);
+		panel.add(numberOfShieldsSpinner);
 		
-		this.add(dragonsTypeLabel);
-		this.add(dragonsTypeComboBox);
+		panel.add(dragonsTypeLabel);
+		panel.add(dragonsTypeComboBox);
 		
-		this.add(saveButton);
-		this.add(cancelButton);
+		panel.add(saveButton);
+		panel.add(cancelButton);
 		
 	}
 	
@@ -163,16 +168,50 @@ public class SettingsPanel extends JPanel {
 	 * Creates a new instance of the class
 	 *
 	 */
-	public SettingsPanel(Settings mazeSettings) {
+	public SettingsDialog(Settings mazeSettings) {
 		
 		this.mazeSettings = mazeSettings;
 		
-		this.setBorder( new EmptyBorder(30, 60, 30, 60) );
-		this.setLayout( new GridLayout(6, 2, 5, 8) );
+		panel = new JPanel( new GridLayout(6, 2, 5, 8) );
+		panel.setBorder( new EmptyBorder(30, 60, 30, 60) );
+		
+		setContentPane( panel );
 		
 		createWidgets();
 		addWidgets();
+	
+		addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if ( e.getKeyCode() == KeyEvent.VK_ESCAPE ) {
+					dispose();
+				}
+				
+			}
+			
+		});
 		
+		pack();
+		setLocationRelativeTo(null);
+		setResizable(false);
+		setFocusable(true);
+		setModal(true);
+		
+		setVisible(true);
 		
 	}
 	

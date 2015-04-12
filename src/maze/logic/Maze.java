@@ -79,9 +79,10 @@ public class Maze {
 	 */
 	public boolean update(Direction heroDirection) {
 		
-		this.moveHero( heroDirection );
-		this.updatePieces();
-		this.drawPieces();
+		if ( this.moveHero( heroDirection ) ) {
+			this.updatePieces();
+			this.drawPieces();
+		}
 		
 		return this.victory || this.hero.isDead();
 		
@@ -183,7 +184,7 @@ public class Maze {
 
 		// Draw Dragons
 		for ( int i = 0; i < this.dragons.size(); i++ ) {
-			if ( this.board.getSymbol( this.dragons.get(i).getPosition() ) == 'E' ) {
+			if ( this.board.getSymbol( this.dragons.get(i).getPosition() ) == 'E' || this.board.getSymbol( this.dragons.get(i).getPosition() ) == 'C' ) {
 				this.board.setSymbol(this.dragons.get(i).getPosition(), 'F');
 			} else {
 				this.board.setSymbol(this.dragons.get(i).getPosition(), this.dragons.get(i).getSymbol());
