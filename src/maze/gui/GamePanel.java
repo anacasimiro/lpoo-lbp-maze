@@ -3,8 +3,8 @@ package maze.gui;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -57,7 +57,7 @@ public class GamePanel extends JPanel {
 		
 		loadImages();
 		
-		addKeyListener(new KeyListener() {
+		addKeyListener(new KeyAdapter() {
 			
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -123,11 +123,6 @@ public class GamePanel extends JPanel {
 				
 			}
 			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				
-			}
-			
 		});
 		
 	}
@@ -190,6 +185,13 @@ public class GamePanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		int vInsets = Launcher.frame.getInsets().top + Launcher.frame.getInsets().bottom;
+		int hInsets = Launcher.frame.getInsets().left + Launcher.frame.getInsets().right;
+		
+		int newSize = Math.min( Launcher.frame.getWidth() - hInsets , Launcher.frame.getHeight() - vInsets);
+		
+		this.setSize(newSize, newSize);
 		
 		tileDimension = this.getHeight() / this.maze.getBoard().getDimension();
 		

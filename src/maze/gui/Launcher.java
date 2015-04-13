@@ -1,9 +1,5 @@
 package maze.gui;
 
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 /**
@@ -46,18 +42,6 @@ public class Launcher {
 	
 	
 	/**
-	 * Change the frame's contentPane
-	 * 
-	 * @param mainPanel The new main panel
-	 */
-	public static void changeMainPanel(JComponent panel) {
-		frame.setContentPane(panel);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-	}
-	
-	
-	/**
 	 * The Main function
 	 * 
 	 * @param args Main arguments
@@ -66,24 +50,6 @@ public class Launcher {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane( mainMenuPanel );
-		
-		frame.addComponentListener(new ComponentAdapter() {
-			
-			@Override
-			public void componentResized(ComponentEvent e) {
-				
-				if ( frame.getContentPane().getClass() == GamePanel.class ) {
-					
-					int width = frame.getWidth() + frame.getInsets().left + frame.getInsets().right;
-					int height = frame.getWidth() + frame.getInsets().top + frame.getInsets().bottom;
-					
-					frame.setSize( width , height);
-					
-				}
-				
-			}
-			
-		});
 		
 		frame.pack();
 		frame.setLocationRelativeTo(null);

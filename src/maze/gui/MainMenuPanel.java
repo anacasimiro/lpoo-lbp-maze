@@ -177,22 +177,20 @@ public class MainMenuPanel extends JComponent {
 		}
 		
 		
-		this.setPreferredSize( new Dimension(852 + getInsets().left + getInsets().right, 480 + getInsets().top + getInsets().bottom) );
+		this.setPreferredSize( new Dimension(852, 480) );
 		this.setLayout( new BorderLayout() );
 		this.add(buttonsPanel, BorderLayout.SOUTH);
 		
 		createWidgets();
 		addWidgets();
 	
-		
-		
 	}
 	
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, this);
+		g.drawImage(background.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH), 0, 0, this);
 	}
 	
 }
