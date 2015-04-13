@@ -1,17 +1,17 @@
-/**
- * 
- */
 package maze.logic;
 
+import java.io.Serializable;
+
 /**
- * A class to represent the Maze settings
+ * A class that represents the Maze settings
  * 
  * @author Ana Casimiro
  * @author Joao Bernardino
  *
  */
-public class Settings {
+public class Settings implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private int mazeDimension;
 	private DragonType dragonsType;
 	private int numberOfDragons;

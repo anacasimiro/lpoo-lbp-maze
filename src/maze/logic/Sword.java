@@ -1,6 +1,5 @@
 package maze.logic;
 
-
 /**
  * A class that represents a sword
  * 
@@ -9,6 +8,8 @@ package maze.logic;
  *
  */
 public class Sword extends Piece {
+	
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * Creates a new instance of the class

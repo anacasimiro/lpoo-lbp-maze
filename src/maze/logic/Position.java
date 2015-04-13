@@ -1,5 +1,6 @@
 package maze.logic;
 
+import java.io.Serializable;
 
 /**
  * A class to represent a position on the maze
@@ -8,8 +9,9 @@ package maze.logic;
  * @author Joao Bernardino
  *
  */
-public class Position {
+public class Position implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private int x, y;
 	
 

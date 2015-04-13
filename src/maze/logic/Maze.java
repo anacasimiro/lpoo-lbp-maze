@@ -1,5 +1,6 @@
 package maze.logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,8 +11,9 @@ import java.util.Random;
  * @author Joao Bernardino
  *
  */
-public class Maze {
+public class Maze implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Settings settings;
 	private Board board;
 	private Hero hero;

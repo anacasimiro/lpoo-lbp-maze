@@ -6,11 +6,15 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -50,7 +54,6 @@ public class MainMenuPanel extends JComponent {
 
 		
 		newGameButton = new JButton("New Game");
-		//newGameButton.setFocusPainted(false);
 		newGameButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -68,11 +71,31 @@ public class MainMenuPanel extends JComponent {
 		
 		
 		loadGameButton = new JButton("Load Game");
-		//newGameButton.setFocusPainted(false);
 		loadGameButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				JFileChooser fileChooser = new JFileChooser();
+				
+				if ( fileChooser.showOpenDialog(Launcher.frame) == JFileChooser.APPROVE_OPTION ) {
+					
+					File source = fileChooser.getSelectedFile();
+					
+					try {
+						FileInputStream fileIn = new FileInputStream(source);
+						ObjectInputStream in = new ObjectInputStream(fileIn);
+						Maze loadedMaze = (Maze)in.readObject();
+						in.close();
+						fileIn.close();
+						Launcher.showGame( new GamePanel( loadedMaze ) );
+					} catch (IOException i) {
+						i.printStackTrace();
+					} catch (ClassNotFoundException c) {
+						c.printStackTrace();
+					}
+					
+				}
 				
 			}
 			
@@ -80,7 +103,6 @@ public class MainMenuPanel extends JComponent {
 		
 		
 		demoGameButton = new JButton("Demo Game");
-		//demoGameButton.setFocusPainted(false);
 		demoGameButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -98,7 +120,6 @@ public class MainMenuPanel extends JComponent {
 		
 		
 		createMazeButton = new JButton("Create Maze");
-		//demoGameButton.setFocusPainted(false);
 		createMazeButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -116,7 +137,6 @@ public class MainMenuPanel extends JComponent {
 		
 		
 		settingsButton = new JButton("Settings");
-		//settingsButton.setFocusPainted(false);
 		settingsButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -128,7 +148,6 @@ public class MainMenuPanel extends JComponent {
 		
 		
 		exitButton = new JButton("Exit");
-		//exitButton.setFocusPainted(false);
 		exitButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -154,6 +173,7 @@ public class MainMenuPanel extends JComponent {
 	private void addWidgets() {
 		
 		buttonsPanel.add(newGameButton);
+		buttonsPanel.add(loadGameButton);
 		buttonsPanel.add(demoGameButton);
 		buttonsPanel.add(createMazeButton);
 		buttonsPanel.add(settingsButton);

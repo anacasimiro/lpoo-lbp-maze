@@ -1,7 +1,17 @@
 package maze.logic;
 
-public class Board {
+import java.io.Serializable;
 
+/**
+ * A class that represents the board of a maze
+ * 
+ * @author Ana Casimiro
+ * @author Joao Bernardino
+ *
+ */
+public class Board implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private char[][] board;
 	private int dimension;
 	private Position exit;

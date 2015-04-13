@@ -5,9 +5,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -40,6 +45,8 @@ public class GamePanel extends JPanel {
 	private Image sword;
 	private Image shield;
 	private Image exit;
+	private ImageIcon winner;
+	private ImageIcon loser;
 	
 	
 	/**
@@ -62,7 +69,7 @@ public class GamePanel extends JPanel {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				
-				boolean done;
+				boolean done = false;
 				
 				switch ( e.getKeyChar() ) {
 					case 'w':
@@ -77,8 +84,26 @@ public class GamePanel extends JPanel {
 					case 'a':
 						done = maze.update( Direction.LEFT );
 					break;
-					default:
-						done = false;
+					case 'g':
+						
+						JFileChooser fileChooser = new JFileChooser();
+						
+						if ( fileChooser.showSaveDialog(Launcher.frame) == JFileChooser.APPROVE_OPTION ) {
+							
+							File destination = fileChooser.getSelectedFile();
+							
+							try {
+								FileOutputStream fileOut = new FileOutputStream(destination);
+								ObjectOutputStream out = new ObjectOutputStream(fileOut);
+								out.writeObject(maze);
+								out.close();
+								fileOut.close();
+							} catch (IOException i) {
+								i.printStackTrace();
+							}
+							
+						}
+						
 					break;
 				}
 				
@@ -146,6 +171,8 @@ public class GamePanel extends JPanel {
 			sword = ImageIO.read( this.getClass().getResource("res/sword.png") );
 			shield = ImageIO.read( this.getClass().getResource("res/shield.png") );
 			exit = ImageIO.read( this.getClass().getResource("res/exit.png") );
+			winner = new ImageIcon( this.getClass().getResource("res/winner.png") );
+			loser = new ImageIcon( this.getClass().getResource("res/loser.png") );
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -172,9 +199,9 @@ public class GamePanel extends JPanel {
 	private void endGame(boolean victory) {
 		
 		if ( victory ) {
-			JOptionPane.showMessageDialog(this, "Congratulations! You won!", "LPOO - Maze", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Congratulations! You won!", "LPOO - Maze", JOptionPane.INFORMATION_MESSAGE, winner);
 		} else {
-			JOptionPane.showMessageDialog(this, "Sorry! You lost!", "LPOO - Maze", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Sorry! You lost!", "LPOO - Maze", JOptionPane.INFORMATION_MESSAGE, loser);
 		}
 			
 		Launcher.showMainMenu();

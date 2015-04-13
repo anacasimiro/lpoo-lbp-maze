@@ -1,5 +1,6 @@
 package maze.logic;
 
+import java.io.Serializable;
 
 /**
  * An abstract class that represents a piece of the board
@@ -8,8 +9,9 @@ package maze.logic;
  * @author Joao Bernardino
  *
  */
-public abstract class Piece {
+public abstract class Piece implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	Position position;
 	char symbol;
 	

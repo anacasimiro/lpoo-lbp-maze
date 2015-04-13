@@ -1,6 +1,5 @@
 package maze.logic;
 
-
 /**
  * A class that represents the hero
  * 
@@ -10,6 +9,7 @@ package maze.logic;
  */
 public class Hero extends Piece {
 
+	private static final long serialVersionUID = 1L;
 	private boolean armed		= false;
 	private boolean shielded	= false;
 	private boolean dead		= false;

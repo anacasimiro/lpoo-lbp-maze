@@ -1,6 +1,5 @@
 package maze.logic;
 
-
 /**
  * A class that represents a dragon
  * 
@@ -10,6 +9,7 @@ package maze.logic;
  */
 public class Dragon extends Piece {
 
+	private static final long serialVersionUID = 1L;
 	private boolean dead = false;
 	private boolean sleeping = false;
 	private DragonType type;
