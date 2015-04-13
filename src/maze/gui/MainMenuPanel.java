@@ -125,11 +125,7 @@ public class MainMenuPanel extends JComponent {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to create a maze?", "LPOO - Maze", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				
-				if ( answer == JOptionPane.YES_OPTION ) {
-					//Launcher.showGame( new GamePanel( new Maze() ) );
-				}
+				new CreationSettingsDialog();
 				
 			}
 			

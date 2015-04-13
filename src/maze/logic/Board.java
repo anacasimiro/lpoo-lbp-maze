@@ -30,6 +30,17 @@ public class Board implements Serializable {
 		this.dimension = dimension == 0 ? 10 : dimension;
 		
 	}
+	
+	
+	/**
+	 * Creates a new instance of the class with a user-created board
+	 *
+	 * @param board The board
+	 */
+	public Board(char[][] board) {
+		this.board = board;
+		this.dimension = board.length;
+	}
 
 
 	/**
@@ -75,6 +86,16 @@ public class Board implements Serializable {
 	
 	
 	/**
+	 * Setter for exit
+	 * 
+	 * @param exit The exit position
+	 */
+	public void setExit(Position exit) {
+		this.exit = exit;
+	}
+	
+	
+	/**
 	 * Sets the symbol on a position of the board
 	 * 
 	 * @param p The position
@@ -98,7 +119,7 @@ public class Board implements Serializable {
 	
 	
 	/**
-	 * Checks if a current position is empty
+	 * Checks if a position is empty
 	 * 
 	 * @param p The position
 	 * 
@@ -106,6 +127,37 @@ public class Board implements Serializable {
 	 */
 	public boolean isEmpty(Position p) {
 		return board[p.getX()][p.getY()] == ' ';
+	}
+	
+	
+	/**
+	 * Checks if a position is on the edge of the board 
+	 * 
+	 * @param p The position
+	 * 
+	 * @return true if position is on edge, false otherwise
+	 */
+	public boolean isEdge(Position p) {
+		
+		return p.getX() == 0 || p.getY() == 0 || p.getX() == dimension - 1 || p.getY() == dimension - 1;
+		
+	}
+	
+	
+	/**
+	 * Checks if a position is a corner of the board 
+	 * 
+	 * @param p The position
+	 * 
+	 * @return true if position is a corner, false otherwise
+	 */
+	public boolean isCorner(Position p) {
+		
+		return 	(p.getX() == 0 && p.getY() == 0) ||
+				(p.getX() == dimension - 1 && p.getY() == 0) ||
+				(p.getX() == 0 && p.getY() == dimension - 1) ||
+				(p.getX() == dimension - 1 && p.getY() == dimension - 1);
+		
 	}
 	
 }

@@ -64,91 +64,9 @@ public class GamePanel extends JPanel {
 		
 		loadImages();
 		
-		addKeyListener(new KeyAdapter() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-				boolean done = false;
-				
-				switch ( e.getKeyChar() ) {
-					case 'w':
-						done = maze.update( Direction.UP );
-					break;
-					case 'd':
-						done = maze.update( Direction.RIGHT );
-					break;
-					case 's':
-						done = maze.update( Direction.DOWN );
-					break;
-					case 'a':
-						done = maze.update( Direction.LEFT );
-					break;
-					case 'g':
-						
-						JFileChooser fileChooser = new JFileChooser();
-						
-						if ( fileChooser.showSaveDialog(Launcher.frame) == JFileChooser.APPROVE_OPTION ) {
-							
-							File destination = fileChooser.getSelectedFile();
-							
-							try {
-								FileOutputStream fileOut = new FileOutputStream(destination);
-								ObjectOutputStream out = new ObjectOutputStream(fileOut);
-								out.writeObject(maze);
-								out.close();
-								fileOut.close();
-							} catch (IOException i) {
-								i.printStackTrace();
-							}
-							
-						}
-						
-					break;
-				}
-				
-				repaint();
-				
-				if ( done ) {
-					endGame( maze.getVictory() );
-				}
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				
-				boolean done = false;
-				
-				switch ( e.getKeyCode() ) {
-					case KeyEvent.VK_UP:
-						done = maze.update( Direction.UP );
-					break;
-					case KeyEvent.VK_RIGHT:
-						done = maze.update( Direction.RIGHT );
-					break;
-					case KeyEvent.VK_DOWN:
-						done = maze.update( Direction.DOWN );
-					break;
-					case KeyEvent.VK_LEFT:
-						done = maze.update( Direction.LEFT );
-					break;
-					case KeyEvent.VK_ESCAPE:
-						if ( JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "LPOO - Maze", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION ) {
-							Launcher.showMainMenu();
-						}
-					break;
-				}
-				
-				repaint();
-				
-				if ( done ) {
-					endGame( maze.getVictory() );
-				}
-				
-			}
-			
-		});
+		addKeyListener(new MyKeyAdapter());
+		
+		Launcher.frame.setResizable(true);
 		
 	}
 	
@@ -209,6 +127,100 @@ public class GamePanel extends JPanel {
 	}
 	
 	
+	/**
+	 * A custom KeyAdapter 
+	 * 
+	 * @author Ana Casimiro
+	 * @author Joao Bernardino
+	 *
+	 */
+	private class MyKeyAdapter extends KeyAdapter {
+		
+		@Override
+		public void keyTyped(KeyEvent e) {
+			
+			boolean done = false;
+			
+			switch ( e.getKeyChar() ) {
+				case 'w':
+					done = maze.update( Direction.UP );
+				break;
+				case 'd':
+					done = maze.update( Direction.RIGHT );
+				break;
+				case 's':
+					done = maze.update( Direction.DOWN );
+				break;
+				case 'a':
+					done = maze.update( Direction.LEFT );
+				break;
+				case 'g':
+					
+					JFileChooser fileChooser = new JFileChooser();
+					
+					if ( fileChooser.showSaveDialog(Launcher.frame) == JFileChooser.APPROVE_OPTION ) {
+						
+						File destination = fileChooser.getSelectedFile();
+						
+						try {
+							FileOutputStream fileOut = new FileOutputStream(destination);
+							ObjectOutputStream out = new ObjectOutputStream(fileOut);
+							out.writeObject(maze);
+							out.close();
+							fileOut.close();
+						} catch (IOException i) {
+							i.printStackTrace();
+						}
+						
+					}
+					
+				break;
+			}
+			
+			repaint();
+			
+			if ( done ) {
+				endGame( maze.getVictory() );
+			}
+			
+		}
+		
+		@Override
+		public void keyPressed(KeyEvent e) {
+			
+			boolean done = false;
+			
+			switch ( e.getKeyCode() ) {
+				case KeyEvent.VK_UP:
+					done = maze.update( Direction.UP );
+				break;
+				case KeyEvent.VK_RIGHT:
+					done = maze.update( Direction.RIGHT );
+				break;
+				case KeyEvent.VK_DOWN:
+					done = maze.update( Direction.DOWN );
+				break;
+				case KeyEvent.VK_LEFT:
+					done = maze.update( Direction.LEFT );
+				break;
+				case KeyEvent.VK_ESCAPE:
+					if ( JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "LPOO - Maze", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION ) {
+						Launcher.showMainMenu();
+					}
+				break;
+			}
+			
+			repaint();
+			
+			if ( done ) {
+				endGame( maze.getVictory() );
+			}
+			
+		}
+		
+	}
+	
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -228,7 +240,6 @@ public class GamePanel extends JPanel {
 				
 				switch ( maze.getBoard().getBoard()[x][y] ) {
 					case 'X':
-						drawTile(g, path, x, y);
 						drawTile(g, wall, x, y);
 					break;
 					case ' ':
@@ -262,6 +273,10 @@ public class GamePanel extends JPanel {
 						drawTile(g, path, x, y);
 						drawTile(g, dragon, x, y);
 					break;
+					case 'f':
+						drawTile(g, path, x, y);
+						drawTile(g, dragonSleeping, x, y);
+					break;
 					case 'E':
 						drawTile(g, path, x, y);
 						drawTile(g, sword, x, y);
@@ -277,9 +292,6 @@ public class GamePanel extends JPanel {
 						} else {
 							drawTile(g, exit, x, y);
 						}
-						
-					break;
-					default:
 						
 					break;
 				}

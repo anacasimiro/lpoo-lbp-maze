@@ -1,6 +1,7 @@
 package maze.gui;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * Controls the Graphical User Interface
@@ -31,11 +32,10 @@ public class Launcher {
 	 * Shows the game panel
 	 * 
 	 */
-	public static void showGame(GamePanel gamePanel) {
+	public static void showGame(JPanel gamePanel) {
 		
 		frame.setContentPane(gamePanel);
 		frame.pack();
-		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
 		
 	}
@@ -49,11 +49,7 @@ public class Launcher {
 	public static void main(String[] args) {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setContentPane( mainMenuPanel );
-		
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
+		showMainMenu();
 		frame.setVisible(true);
 		
 	}

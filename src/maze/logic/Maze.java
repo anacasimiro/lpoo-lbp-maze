@@ -54,7 +54,39 @@ public class Maze implements Serializable {
 		
 		// Add dragons
 		for ( int i = 0; i < this.settings.getNumberOfDragons(); i++ ) {
-			this.newDragon(this.settings.getDragonsType());
+			this.newDragon();
+		}
+		
+		// Add swords
+		for ( int i = 0; i < this.settings.getNumberOfSwords(); i++ ) {
+			this.newSword();			
+		}
+		
+		// Add shields
+		for ( int i = 0; i < this.settings.getNumberOfShields(); i++ ) {
+			this.newShield();			
+		}
+		
+		this.drawPieces();
+		
+	}
+	
+	
+	/**
+	 * Creates a new instance of the class with given settings and board
+	 *
+	 * @param settings The game settings
+	 * @param board The board
+	 */
+	public Maze(Settings settings, Board board) {
+		
+		this.settings	= settings;
+		this.board		= board;
+		this.hero 		= new Hero( this.randomEmptyPosition() );
+		
+		// Add dragons
+		for ( int i = 0; i < this.settings.getNumberOfDragons(); i++ ) {
+			this.newDragon();
 		}
 		
 		// Add swords
@@ -94,9 +126,8 @@ public class Maze implements Serializable {
 	/**
 	 * Creates a new dragon
 	 * 
-	 * @param type The dragon type
 	 */
-	private void newDragon(DragonType type) {
+	private void newDragon() {
 		
 		Position dragonPosition;
 		
@@ -104,11 +135,23 @@ public class Maze implements Serializable {
 			dragonPosition = this.randomEmptyPosition();
 		} while ( dragonPosition.isAdjacent( this.hero.getPosition() ) );
 		
-		this.dragons.add( new Dragon( dragonPosition, type ) );
+		this.dragons.add( new Dragon( dragonPosition, settings.getDragonsType() ) );
 		
 	}
 	
-
+	
+	/**
+	 * Creates a new dragon in a given position
+	 * 
+	 * @param p The dragon position
+	 */
+	public void newDragon(Position p) {
+		
+		this.dragons.add( new Dragon( p, settings.getDragonsType() ) );
+		
+	}
+	
+	
 	/**
 	 * Creates a new sword
 	 * 
@@ -119,10 +162,30 @@ public class Maze implements Serializable {
 	
 	
 	/**
+	 * Creates a new sword in a given position
+	 * 
+	 * @param p The sword position
+	 */
+	public void newSword(Position p) {
+		this.swords.add( new Sword( p ) );
+	}
+	
+	
+	/**
 	 * Creates a new shield
 	 */
 	private void newShield() {
 		this.shields.add( new Shield( this.randomEmptyPosition() ) );
+	}
+	
+	
+	/**
+	 * Creates a new shield in a given position
+	 * 
+	 * @param p The shield position
+	 */
+	public void newShield(Position p) {
+		this.shields.add( new Shield( p ) );
 	}
 	
 	
@@ -187,7 +250,11 @@ public class Maze implements Serializable {
 		// Draw Dragons
 		for ( int i = 0; i < this.dragons.size(); i++ ) {
 			if ( this.board.getSymbol( this.dragons.get(i).getPosition() ) == 'E' || this.board.getSymbol( this.dragons.get(i).getPosition() ) == 'C' ) {
-				this.board.setSymbol(this.dragons.get(i).getPosition(), 'F');
+				if ( this.dragons.get(i).isSleeping() ) {
+					this.board.setSymbol(this.dragons.get(i).getPosition(), 'F');
+				} else {
+					this.board.setSymbol(this.dragons.get(i).getPosition(), 'f');
+				}
 			} else {
 				this.board.setSymbol(this.dragons.get(i).getPosition(), this.dragons.get(i).getSymbol());
 			}
@@ -336,6 +403,16 @@ public class Maze implements Serializable {
 		
 	}
 
+	
+	/**
+	 * Getter for settings
+	 * 
+	 * @return the settings
+	 */
+	public Settings getSettings() {
+		return this.settings;
+	}
+	
 
 	/**
 	 * Getter for hero
@@ -394,6 +471,26 @@ public class Maze implements Serializable {
 	 */
 	public Board getBoard() {
 		return board;
+	}
+
+	
+	/**
+	 * Setter for hero
+	 * 
+	 * @param hero The hero
+	 */
+	public void setHero(Hero hero) {
+		this.hero = hero;
+	}
+	
+	
+	/**
+	 * Setter for board
+	 * 
+	 * @param board The board
+	 */
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 	
 
