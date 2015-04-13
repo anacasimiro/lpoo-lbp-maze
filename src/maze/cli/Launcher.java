@@ -25,7 +25,7 @@ public class Launcher {
 	 * 
 	 * @param scanner The keyboard Scanner
 	 * 
-	 * @param config A container to store the maze configuration
+	 * @return the maze settings
 	 */
 	private static Settings getMazeSettings(Scanner scanner) {
 		
@@ -271,9 +271,9 @@ public class Launcher {
 	/**
 	 * Asks user for hero direction
 	 * 
-	 * @param scanner The keyboard Scanner
+	 * @param input The user input
 	 * 
-	 * @return
+	 * @return The direction of the movement
 	 */
 	private static Direction getHeroDirection(String input) {
 		
@@ -296,7 +296,9 @@ public class Launcher {
 	/**
 	 * Controls a new game
 	 * 
-	 * @param scanner
+	 * @param scanner The keyboard scanner
+	 * 
+	 * @return true if victory, false otherwise
 	 */
 	private static boolean newGame(Scanner scanner) {
 		
@@ -345,7 +347,7 @@ public class Launcher {
 	/**
 	 * The Main function
 	 * 
-	 * @param args
+	 * @param args The main arguments
 	 */
 	public static void main(String[] args) {
 		

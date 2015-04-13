@@ -60,7 +60,7 @@ public class CreationPanel extends JPanel {
 	/**
 	 * Creates a new instance of the class
 	 *
-	 * @param mazeDimension The maze dimension
+	 * @param maze The maze
 	 */
 	public CreationPanel(Maze maze) {
 		
@@ -399,6 +399,11 @@ public class CreationPanel extends JPanel {
 	
 	/**
 	 * Draws a tile on the screen
+	 * 
+	 * @param g The graphics
+	 * @param image The image
+	 * @param x The horizontal coordinate
+	 * @param y The vertical coordinate
 	 * 
 	 */
 	private void drawTile(Graphics g, Image image, int x, int y) {

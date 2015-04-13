@@ -35,11 +35,11 @@ public class Settings implements Serializable {
 	/**
 	 * Creates a new instance of the class with the given parameters
 	 *
-	 * @param mazeDimension
-	 * @param dragonsType
-	 * @param numberOfDragons
-	 * @param numberOfSwords
-	 * @param numberOfShields
+	 * @param mazeDimension The maze dimension
+	 * @param dragonsType The dragons type
+	 * @param numberOfDragons The number of dragons
+	 * @param numberOfSwords The number of swords
+	 * @param numberOfShields The number of shields
 	 */
 	public Settings( int mazeDimension, DragonType dragonsType, int numberOfDragons, int numberOfSwords, int numberOfShields) {
 		this.mazeDimension = mazeDimension;

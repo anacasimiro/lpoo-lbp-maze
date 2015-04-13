@@ -31,6 +31,8 @@ public class Launcher {
 	/**
 	 * Shows the game panel
 	 * 
+	 * @param gamePanel The GamePanel
+	 * 
 	 */
 	public static void showGame(JPanel gamePanel) {
 		

@@ -54,6 +54,8 @@ public class SettingsDialog extends JDialog {
 	/**
 	 * Creates a new instance of the class
 	 *
+	 * @param mazeSettings The maze settings
+	 *
 	 */
 	public SettingsDialog(Settings mazeSettings) {
 		

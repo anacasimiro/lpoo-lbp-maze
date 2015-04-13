@@ -52,7 +52,7 @@ public class GamePanel extends JPanel {
 	/**
 	 * Creates a new instance of the class
 	 *
-	 * @param mazeSettings
+	 * @param maze The maze
 	 */
 	public GamePanel(Maze maze) {
 		
@@ -101,6 +101,11 @@ public class GamePanel extends JPanel {
 	
 	/**
 	 * Draws a tile on the screen
+	 *
+	 * @param g The graphics
+	 * @param image The image
+	 * @param x The horizontal coordinate
+	 * @param y The vertical coordinate
 	 * 
 	 */
 	private void drawTile(Graphics g, Image image, int x, int y) {
@@ -112,6 +117,8 @@ public class GamePanel extends JPanel {
 	
 	/**
 	 * Ends the game
+	 * 
+	 * @param victory The victory state
 	 * 
 	 */
 	private void endGame(boolean victory) {
