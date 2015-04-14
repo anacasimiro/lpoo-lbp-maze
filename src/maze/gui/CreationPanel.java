@@ -51,7 +51,7 @@ public class CreationPanel extends JPanel {
 	private Image dragon;
 	private Image sword;
 	private Image shield;
-	private Image exit;
+	private Image exitClosed;
 	private Image currentPiece;
 	
 	private JFrame helpFrame;
@@ -153,7 +153,7 @@ public class CreationPanel extends JPanel {
 			dragon = ImageIO.read( this.getClass().getResource("res/dragon.png") );
 			sword = ImageIO.read( this.getClass().getResource("res/sword.png") );
 			shield = ImageIO.read( this.getClass().getResource("res/shield.png") );
-			exit = ImageIO.read( this.getClass().getResource("res/exit.png") );
+			exitClosed = ImageIO.read( this.getClass().getResource("res/exitClosed.png") );
 		
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -235,7 +235,7 @@ public class CreationPanel extends JPanel {
 					currentPiece = shield;
 				break;
 				case 's':
-					currentPiece = exit;
+					currentPiece = exitClosed;
 				break;
 				case 'n':
 					if ( heroPosition != null ) {
@@ -335,7 +335,7 @@ public class CreationPanel extends JPanel {
 					board.setSymbol(mouseTile, 'C');
 				}
 				
-			} else if ( currentPiece == exit ) {
+			} else if ( currentPiece == exitClosed ) {
 				
 				if ( board.isEdge(mouseTile) && !board.isCorner(mouseTile) ) {
 					if ( board.getSymbol(mouseTile) == 'H' ) {
@@ -449,7 +449,7 @@ public class CreationPanel extends JPanel {
 						drawTile(g, shield, x, y);
 					break;
 					case 'S':
-						drawTile(g, exit, x, y);
+						drawTile(g, exitClosed, x, y);
 					break;
 				}
 
@@ -463,7 +463,7 @@ public class CreationPanel extends JPanel {
 				drawTile(g, currentPiece, mouseTile.getX(), mouseTile.getY());
 			}
 			
-		} else if ( currentPiece == exit ) {
+		} else if ( currentPiece == exitClosed ) {
 			
 			if ( board.isEdge(mouseTile) && !board.isCorner(mouseTile) ) {
 				drawTile(g, currentPiece, mouseTile.getX(), mouseTile.getY());

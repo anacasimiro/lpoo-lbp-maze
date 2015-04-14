@@ -44,7 +44,8 @@ public class GamePanel extends JPanel {
 	private Image dragonSleeping;
 	private Image sword;
 	private Image shield;
-	private Image exit;
+	private Image exitClosed;
+	private Image exitOpen;
 	private ImageIcon winner;
 	private ImageIcon loser;
 	
@@ -88,7 +89,8 @@ public class GamePanel extends JPanel {
 			dragonSleeping = ImageIO.read( this.getClass().getResource("res/dragonSleeping.png") );
 			sword = ImageIO.read( this.getClass().getResource("res/sword.png") );
 			shield = ImageIO.read( this.getClass().getResource("res/shield.png") );
-			exit = ImageIO.read( this.getClass().getResource("res/exit.png") );
+			exitClosed = ImageIO.read( this.getClass().getResource("res/exitClosed.png") );
+			exitOpen = ImageIO.read( this.getClass().getResource("res/exitOpen.png") );
 			winner = new ImageIcon( this.getClass().getResource("res/winner.png") );
 			loser = new ImageIcon( this.getClass().getResource("res/loser.png") );
 			
@@ -295,9 +297,9 @@ public class GamePanel extends JPanel {
 					case 'S':
 						
 						if ( maze.getHero().isArmed() ) {
-							drawTile(g, path, x, y);
+							drawTile(g, exitOpen, x, y);
 						} else {
-							drawTile(g, exit, x, y);
+							drawTile(g, exitClosed, x, y);
 						}
 						
 					break;
